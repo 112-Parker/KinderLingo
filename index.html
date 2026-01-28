@@ -7,11 +7,10 @@
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🐤</text></svg>">
     
     <style>
-        /* CSS RESET */
         * { box-sizing: border-box; }
-        body, html { margin: 0; padding: 0; width: 100%; height: 100%; font-family: 'Segoe UI', Tahoma, sans-serif; }
+        body, html { margin: 0; padding: 0; width: 100%; height: 100%; font-family: 'Segoe UI', sans-serif; }
 
-        /* HÌNH NỀN CỐ ĐỊNH - NẰM DƯỚI CÙNG */
+        /* LỚP NỀN DƯỚI CÙNG */
         .app-background {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background-image: url('https://images.unsplash.com/photo-1503676260728-1c00da094a0b?q=80&w=1920');
@@ -19,16 +18,19 @@
             z-index: -1;
         }
 
-        /* KHUNG ĐĂNG NHẬP */
-        #login-page {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            display: flex; align-items: center; justify-content: center;
-            background: rgba(0, 0, 0, 0.4); z-index: 9999;
+        /* HIỆU ỨNG CON CHIM NHẢY */
+        @keyframes birdBounce {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-15px) rotate(5deg); }
         }
-        .login-box {
-            background: white; padding: 40px; border-radius: 25px; width: 340px;
-            text-align: center; box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+        .bird-icon { 
+            font-size: 50px; 
+            display: inline-block; 
+            animation: birdBounce 2s infinite ease-in-out; 
+            cursor: pointer;
         }
+
+        /* CHỮ MÀU VÀNG CAM RỰC RỠ */
         .logo-text {
             font-weight: 800;
             font-size: 28px;
@@ -38,18 +40,29 @@
             display: inline-block;
         }
 
-        /* GIAO DIỆN CHÍNH */
+        /* LOGIN */
+        #login-page {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            display: flex; align-items: center; justify-content: center;
+            background: rgba(0, 0, 0, 0.5); z-index: 9999;
+        }
+        .login-box {
+            background: white; padding: 40px; border-radius: 25px; width: 340px;
+            text-align: center; box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+        }
+
+        /* APP CHÍNH */
         #main-app { display: none; flex-direction: column; min-height: 100vh; position: relative; z-index: 10; }
         
         header {
-            background: rgba(255, 255, 255, 0.95); padding: 12px 5%;
+            background: rgba(255, 255, 255, 0.95); padding: 10px 5%;
             display: flex; justify-content: space-between; align-items: center;
             box-shadow: 0 2px 10px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 1000;
         }
 
         .content-container { display: flex; max-width: 1200px; margin: 25px auto; width: 95%; gap: 20px; }
 
-        /* SIDEBAR (THANH MENU) */
+        /* SIDEBAR */
         .sidebar {
             width: 240px; background: white; border-radius: 18px; padding: 15px;
             height: fit-content; box-shadow: 0 5px 15px rgba(0,0,0,0.1);
@@ -58,29 +71,21 @@
         .menu-btn {
             padding: 14px 18px; margin-bottom: 8px; cursor: pointer; border-radius: 12px;
             font-weight: 600; transition: 0.3s; color: #444; border: 1px solid transparent;
-            display: block; text-decoration: none;
         }
-        .menu-btn:hover { background: #f0f7ff; color: #2563eb; }
-        .menu-btn.active { background: #2563eb; color: white; }
+        .menu-btn:hover { background: #fff7ed; color: #f59e0b; }
+        .menu-btn.active { background: #f59e0b; color: white; }
 
-        /* VÙNG NỘI DUNG CHÍNH */
+        /* NỘI DUNG */
         .display-area {
             flex: 1; background: rgba(255, 255, 255, 0.9); border-radius: 18px; 
             padding: 30px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); z-index: 100;
         }
 
-        /* LỚP TAB (HIỆN/ẨN) */
-        .content-tab { display: none; visibility: hidden; }
-        .content-tab.active { display: block; visibility: visible; }
+        .content-tab { display: none; }
+        .content-tab.active { display: block; }
 
-        /* TRANG TRÍ */
-        @keyframes birdBounce {
-            0%, 100% { transform: translateY(0) rotate(0deg); }
-            50% { transform: translateY(-15px) rotate(5deg); }
-        }
-        .bird-icon { font-size: 50px; display: inline-block; margin-bottom: 10px; }
-        .btn-action { background: #2563eb; color: white; border: none; padding: 12px; border-radius: 10px; cursor: pointer; font-weight: bold; width: 100%; margin-top: 10px; }
-        input, select { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ddd; border-radius: 10px; font-size: 15px; }
+        .btn-action { background: #f59e0b; color: white; border: none; padding: 12px; border-radius: 10px; cursor: pointer; font-weight: bold; width: 100%; margin-top: 10px; }
+        input, select { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ddd; border-radius: 10px; }
         .lesson-card { background: white; border-radius: 15px; padding: 20px; margin-bottom: 20px; border: 1px solid #eee; }
     </style>
 </head>
@@ -90,27 +95,29 @@
 
     <div id="login-page">
         <div class="login-box">
-            <span class="bird-icon">🐤</span>
-            <h2 style="margin:0 0 20px 0">KinderLingo</h2>
+            <div class="bird-icon">🐤</div>
+            <div><span class="logo-text">KinderLingo</span></div>
+            <p style="color: #666; margin-bottom: 20px;">Welcome to your classroom!</p>
             <input type="text" id="u" placeholder="Admin name">
             <input type="password" id="p" placeholder="Password">
-            <button class="btn-action" onclick="handleLogin()">Login</button>
+            <button class="btn-action" onclick="handleLogin()">Bắt đầu học ngay</button>
         </div>
     </div>
 
     <div id="main-app">
         <header>
-            <div style="font-weight:bold; font-size:22px; color:#2563eb; display:flex; align-items:center; gap:8px">
-                <span>🐤</span> KinderLingo
+            <div style="display:flex; align-items:center; gap:12px">
+                <div class="bird-icon" style="font-size: 35px;">🐤</div>
+                <span class="logo-text" style="font-size: 22px;">KinderLingo</span>
             </div>
-            <div style="flex:0 1 450px"><input type="text" id="searchBar" placeholder="Search lessons..." onkeyup="refreshList()" style="margin:0"></div>
-            <button onclick="location.reload()" style="background:#ffeded; color:red; border:none; padding:8px 15px; border-radius:8px; cursor:pointer; font-weight:bold">Logout</button>
+            <div style="flex:0 1 450px"><input type="text" id="searchBar" placeholder="Tìm kiếm bài học..." onkeyup="refreshList()" style="margin:0; border-radius: 20px;"></div>
+            <button onclick="location.reload()" style="background:#fee2e2; color:red; border:none; padding:8px 15px; border-radius:8px; cursor:pointer; font-weight:bold">Thoát</button>
         </header>
 
         <div class="content-container">
             <div class="sidebar">
-                <div class="menu-btn active" id="btn-lessons" onclick="switchPage('lessons-page')">📚 Lessons</div>
-                <div class="menu-btn" id="btn-admin" onclick="switchPage('admin-page')">⚙️ Administration</div>
+                <div class="menu-btn active" id="btn-lessons" onclick="switchPage('lessons-page')">📚 Bài học</div>
+                <div class="menu-btn" id="btn-admin" onclick="switchPage('admin-page')">⚙️ Quản lý</div>
             </div>
 
             <div class="display-area">
@@ -119,17 +126,16 @@
                 </div>
 
                 <div id="admin-page" class="content-tab">
-                    <h3 style="margin-top:0">Upload New Content</h3>
-                    <div style="background:#f9fafb; padding:20px; border-radius:15px">
-                        <label>Format:</label>
+                    <h3 style="margin-top:0">Thêm nội dung bài học</h3>
+                    <div style="background:#fff7ed; padding:20px; border-radius:15px; border: 1px solid #ffedd5;">
                         <select id="dataType" onchange="adjustInputs()">
-                            <option value="vid">YouTube Video</option>
-                            <option value="doc">PDF Document</option>
+                            <option value="vid">Video YouTube</option>
+                            <option value="doc">Tài liệu PDF</option>
                         </select>
-                        <input type="text" id="dataTitle" placeholder="Enter title...">
-                        <input type="text" id="dataLink" placeholder="Paste URL here...">
+                        <input type="text" id="dataTitle" placeholder="Tiêu đề bài học...">
+                        <input type="text" id="dataLink" placeholder="Dán link YouTube tại đây...">
                         <input type="file" id="dataFile" accept="application/pdf" style="display:none">
-                        <button class="btn-action" style="background:#10b981" onclick="uploadData()">Save to Cloud ☁️</button>
+                        <button class="btn-action" style="background:#10b981" onclick="uploadData()">Lưu lên hệ thống ☁️</button>
                     </div>
                 </div>
             </div>
@@ -159,19 +165,13 @@
             document.getElementById('login-page').style.display = 'none';
             document.getElementById('main-app').style.display = 'flex';
             refreshList();
-        } else alert("Invalid username or password!");
+        } else alert("Sai tài khoản hoặc mật khẩu!");
     };
 
     window.switchPage = (pageId) => {
-        // Ẩn tất cả tab
         document.querySelectorAll('.content-tab').forEach(t => t.classList.remove('active'));
         document.querySelectorAll('.menu-btn').forEach(b => b.classList.remove('active'));
-        
-        // Hiện tab được chọn
-        const target = document.getElementById(pageId);
-        target.classList.add('active');
-        
-        // Active nút tương ứng
+        document.getElementById(pageId).classList.add('active');
         if(pageId === 'lessons-page') document.getElementById('btn-lessons').classList.add('active');
         else document.getElementById('btn-admin').classList.add('active');
     };
@@ -185,7 +185,7 @@
     window.uploadData = async () => {
         const type = document.getElementById('dataType').value;
         const title = document.getElementById('dataTitle').value;
-        if(!title) return alert("Title is missing!");
+        if(!title) return alert("Vui lòng nhập tiêu đề!");
         let finalData = "";
 
         if(type === 'vid') {
@@ -193,14 +193,14 @@
             finalData = url.split('v=')[1]?.split('&')[0] || url.split('/').pop();
         } else {
             const f = document.getElementById('dataFile').files[0];
-            if(!f) return alert("No file selected!");
+            if(!f) return alert("Chưa chọn file PDF!");
             finalData = await new Promise(res => {
                 const reader = new FileReader(); reader.onload = () => res(reader.result); reader.readAsDataURL(f);
             });
         }
 
         push(dbRef, { type, title, data: finalData }).then(() => {
-            alert("Upload Success!");
+            alert("Đã lưu thành công!");
             document.getElementById('dataTitle').value = "";
             switchPage('lessons-page');
         });
@@ -211,7 +211,7 @@
             const container = document.getElementById('lesson-list-container');
             container.innerHTML = "";
             const vals = snap.val();
-            if(!vals) return container.innerHTML = "<p>No lessons available.</p>";
+            if(!vals) return container.innerHTML = "<p>Chưa có bài học nào.</p>";
             
             const search = document.getElementById('searchBar').value.toLowerCase();
             Object.entries(vals).reverse().forEach(([id, item]) => {
@@ -222,18 +222,18 @@
                 card.innerHTML = `
                     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px">
                         <strong style="font-size:18px">${item.title}</strong>
-                        <button onclick="delItem('${id}')" style="color:red; background:none; border:none; cursor:pointer; font-weight:bold">Delete</button>
+                        <button onclick="delItem('${id}')" style="color:#ef4444; background:none; border:none; cursor:pointer; font-weight:bold">Xóa</button>
                     </div>
                     ${item.type === 'vid' ? 
                         `<iframe style="width:100%; aspect-ratio:16/9; border-radius:10px" src="https://www.youtube.com/embed/${item.data}" frameborder="0" allowfullscreen></iframe>` : 
-                        `<button onclick="openPDF('${id}')" style="width:100%; padding:15px; cursor:pointer; background:#fff7ed; border:1px solid #fdba74; border-radius:10px; font-weight:bold; color:#c2410c">📖 Open PDF Material</button>`}
+                        `<button onclick="openPDF('${id}')" style="width:100%; padding:15px; cursor:pointer; background:#fff7ed; border:1px solid #fdba74; border-radius:10px; font-weight:bold; color:#c2410c">📖 Mở tài liệu PDF</button>`}
                 `;
                 container.appendChild(card);
             });
         });
     }
 
-    window.delItem = (id) => confirm("Delete this lesson?") && remove(ref(db, 'study_content/'+id));
+    window.delItem = (id) => confirm("Xóa bài học này nhé?") && remove(ref(db, 'study_content/'+id));
     
     window.openPDF = (id) => {
         onValue(ref(db, 'study_content/'+id), (snap) => {
@@ -245,4 +245,3 @@
 </script>
 </body>
 </html>
-
