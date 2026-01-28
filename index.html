@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -9,11 +8,17 @@
         :root { --primary: #2563eb; --secondary: #10b981; --bg: #f1f5f9; --danger: #ef4444; --dark: #1e293b; }
         body { font-family: 'Segoe UI', sans-serif; margin: 0; background: var(--bg); color: var(--dark); }
         #login-page { display: flex; align-items: center; justify-content: center; height: 100vh; background: var(--dark); }
-        .login-box { background: white; padding: 30px; border-radius: 12px; width: 320px; text-align: center; }
+        .login-box { background: white; padding: 40px; border-radius: 20px; width: 350px; text-align: center; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.5); }
+        
+        /* Logo Animation */
+        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+        .bird-logo { font-size: 60px; animation: bounce 2s infinite ease-in-out; display: inline-block; cursor: pointer; }
+        
         #main-app { display: none; min-height: 100vh; flex-direction: column; }
-        header { background: white; padding: 10px 5%; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #e2e8f0; }
-        .logo-area { display: flex; align-items: center; gap: 10px; font-weight: bold; font-size: 20px; color: var(--primary); }
-        .logo-box { width: 40px; height: 40px; background: var(--primary); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; }
+        header { background: white; padding: 10px 5%; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #e2e8f0; sticky; top: 0; z-index: 100; }
+        .logo-area { display: flex; align-items: center; gap: 10px; font-weight: bold; font-size: 24px; color: var(--primary); }
+        .logo-area span { background: linear-gradient(45deg, #f59e0b, #ef4444); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        
         .search-bar { flex: 0 1 400px; }
         .search-bar input { width: 100%; padding: 10px 15px; border-radius: 20px; border: 1px solid #cbd5e1; outline: none; }
         .container { display: flex; max-width: 1200px; margin: 20px auto; width: 95%; gap: 20px; }
@@ -30,47 +35,25 @@
         .btn-primary { background: var(--primary); color: white; }
         input, select { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box; }
         .pdf-btn { display: inline-block; background: #fef3c7; color: #92400e; padding: 10px 20px; border-radius: 6px; text-decoration: none; font-weight: bold; margin-top: 10px; }
-            /* Hiệu ứng hoạt hình cho logo */
-@keyframes bounce {
-    0%, 100% { transform: translateY(0) rotate(0deg); }
-    50% { transform: translateY(-10px) rotate(5deg); }
-}
-
-.bird-logo {
-    font-size: 40px; /* Độ lớn của con chim */
-    display: inline-block;
-    animation: bounce 2s infinite ease-in-out; /* Nhún nhảy mỗi 2 giây */
-    cursor: pointer;
-}
-
-.logo-area span {
-    font-size: 24px;
-    background: linear-gradient(45deg, #f59e0b, #ef4444);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    font-weight: 800;
-}
     </style>
 </head>
 <body>
 
 <div id="login-page">
     <div class="login-box">
-    <div class="bird-logo" style="font-size: 60px;">🐤</div>
-    <h2 style="margin-top: 10px; color: var(--dark);">KinderLingo</h2>
-    <p style="color: #64748b; font-size: 14px;">Welcome to your classroom!</p>
-    <input type="text" id="username" placeholder="admin">
-    ...
-</div>
+        <div class="bird-logo">🐤</div>
+        <h2 style="margin: 10px 0;">KinderLingo</h2>
+        <p style="color: #64748b; margin-bottom: 20px;">Welcome to your classroom!</p>
+        <input type="text" id="username" placeholder="admin">
+        <input type="password" id="password" placeholder="123">
+        <button class="btn btn-primary" style="width:100%" onclick="login()">Start Learning</button>
+    </div>
 </div>
 
 <div id="main-app">
     <header>
-        <div class="logo-area">
-    <div class="bird-logo">🐤</div> 
-    <span>KinderLingo</span>
-</div>
-        <div class="search-bar"><input type="text" id="searchInput" placeholder="Search lessons..."></div>
+        <div class="logo-area"><div class="bird-logo" style="font-size: 30px;">🐤</div> <span>KinderLingo</span></div>
+        <div class="search-bar"><input type="text" id="searchInput" placeholder="Search lessons..." onkeyup="searchContent()"></div>
         <button class="btn" style="background:#f1f5f9; color: var(--danger)" onclick="location.reload()">Exit</button>
     </header>
 
@@ -86,15 +69,15 @@
             </div>
 
             <div id="admin-panel" class="tab-panel">
-                <h3>New Content</h3>
+                <h3>Create Content</h3>
                 <div style="background:#f8fafc; padding: 20px; border-radius: 10px;">
                     <label>Type:</label>
                     <select id="contentType" onchange="toggleInput()">
                         <option value="video">YouTube Video</option>
                         <option value="pdf">PDF File</option>
                     </select>
-                    <input type="text" id="contentTitle" placeholder="Title...">
-                    <input type="text" id="contentLink" placeholder="Paste link here...">
+                    <input type="text" id="contentTitle" placeholder="Lesson title...">
+                    <input type="text" id="contentLink" placeholder="Paste YouTube link...">
                     <input type="file" id="contentFile" accept="application/pdf" style="display:none">
                     <button class="btn btn-primary" style="background:var(--secondary); width:100%" onclick="saveContent()">Save to Cloud</button>
                 </div>
@@ -107,11 +90,10 @@
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
     import { getDatabase, ref, push, onValue, remove } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
-    // --- ÔNG CHỈ CẦN SỬA ĐÚNG KHÚC NÀY ---
     const firebaseConfig = {
         apiKey: "AIzaSyCNxcMDCNliNsBgUTIvdEZGb-92c-L_3cs",
         authDomain: "kinderlingo-b9976.firebaseapp.com",
-        databaseURL: "https://kinderlingo-b9976-default-rtdb.firebaseio.com/", // <--- QUAN TRỌNG: Kiểm tra link này trong tab Realtime Database
+        databaseURL: "https://kinderlingo-b9976-default-rtdb.firebaseio.com/",
         projectId: "kinderlingo-b9976",
         storageBucket: "kinderlingo-b9976.firebasestorage.app",
         messagingSenderId: "946131764403",
@@ -122,52 +104,50 @@
     const db = getDatabase(app);
     const contentRef = ref(db, 'study_content');
 
-    // Các hàm global để HTML gọi được (vì đây là module)
     window.login = function() {
         if (document.getElementById('username').value === 'admin' && document.getElementById('password').value === '123') {
             document.getElementById('login-page').style.display = 'none';
             document.getElementById('main-app').style.display = 'flex';
             loadDataFromFirebase();
-        } else alert("Wrong credentials!");
+        } else alert("Oops! Wrong password.");
     };
 
     window.openTab = function(tabName) {
         document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
         document.querySelectorAll('.menu-item').forEach(i => i.classList.remove('active'));
         document.getElementById(tabName).classList.add('active');
-        if(tabName === 'view-content') document.getElementById('btn-view').classList.add('active');
-        else document.getElementById('btn-admin').classList.add('active');
+        document.getElementById(tabName === 'view-content' ? 'btn-view' : 'btn-admin').classList.add('active');
     };
 
     window.toggleInput = function() {
-        const type = document.getElementById('contentType').value;
-        document.getElementById('contentLink').style.display = (type === 'video') ? 'block' : 'none';
-        document.getElementById('contentFile').style.display = (type === 'pdf') ? 'block' : 'none';
+        const isPdf = document.getElementById('contentType').value === 'pdf';
+        document.getElementById('contentLink').style.display = isPdf ? 'none' : 'block';
+        document.getElementById('contentFile').style.display = isPdf ? 'block' : 'none';
     };
 
     window.saveContent = async function() {
         const type = document.getElementById('contentType').value;
         const title = document.getElementById('contentTitle').value;
         let data = "";
-
-        if (!title) return alert("Title missing!");
+        if (!title) return alert("Please enter a title!");
 
         if (type === 'video') {
             const link = document.getElementById('contentLink').value;
             data = link.split('v=')[1]?.split('&')[0] || link.split('/').pop();
         } else {
             const file = document.getElementById('contentFile').files[0];
-            if (!file) return alert("Select PDF file!");
-            data = await toBase64(file);
+            if (!file) return alert("Please select a PDF!");
+            if (file.size > 1.5 * 1024 * 1024) return alert("File too large! (< 1.5MB)");
+            data = await new Promise(res => {
+                const r = new FileReader(); r.onload = () => res(r.result); r.readAsDataURL(file);
+            });
         }
 
-        push(contentRef, { type, title, data })
-            .then(() => {
-                alert("Saved!");
-                document.getElementById('contentTitle').value = "";
-                openTab('view-content');
-            })
-            .catch(e => alert("Error: " + e.message));
+        push(contentRef, { type, title, data }).then(() => {
+            alert("Lesson saved!");
+            document.getElementById('contentTitle').value = "";
+            openTab('view-content');
+        });
     };
 
     function loadDataFromFirebase() {
@@ -175,9 +155,11 @@
             const list = document.getElementById('content-list');
             list.innerHTML = "";
             const data = snapshot.val();
-            if (!data) return list.innerHTML = "No lessons yet.";
+            if (!data) return list.innerHTML = "No lessons yet. Go to Admin to add some!";
 
+            const search = document.getElementById('searchInput').value.toLowerCase();
             Object.entries(data).reverse().forEach(([id, item]) => {
+                if (!item.title.toLowerCase().includes(search)) return;
                 const card = document.createElement('div');
                 card.className = 'card';
                 card.innerHTML = `
@@ -187,40 +169,29 @@
                     </div>
                     ${item.type === 'video' ? 
                         `<div class="video-container"><iframe src="https://www.youtube.com/embed/${item.data}"></iframe></div>` : 
-                        `<button onclick="viewPDF('${id}')" class="pdf-btn" style="border:none; cursor:pointer">📖 View PDF</button>`}
+                        `<button onclick="viewPDF('${id}')" class="pdf-btn">📖 Open PDF Document</button>`}
                 `;
                 list.appendChild(card);
             });
         });
     }
 
-    window.removeItem = (id) => confirm("Delete?") && remove(ref(db, `study_content/${id}`));
+    window.removeItem = (id) => confirm("Delete this lesson?") && remove(ref(db, `study_content/${id}`));
 
     window.viewPDF = (id) => {
         onValue(ref(db, `study_content/${id}`), (s) => {
             const item = s.val();
             if (item && item.data) {
-                const blob = b64toBlob(item.data.split(',')[1], 'application/pdf');
-                window.open(URL.createObjectURL(blob), '_blank');
+                const byteChars = atob(item.data.split(',')[1]);
+                const byteNums = new Array(byteChars.length);
+                for (let i = 0; i < byteChars.length; i++) byteNums[i] = byteChars.charCodeAt(i);
+                const url = URL.createObjectURL(new Blob([new Uint8Array(byteNums)], {type: 'application/pdf'}));
+                window.open(url, '_blank');
             }
         }, { onlyOnce: true });
     };
 
-    const toBase64 = f => new Promise((res, rej) => {
-        const r = new FileReader(); r.readAsDataURL(f);
-        r.onload = () => res(r.result); r.onerror = rej;
-    });
-
-    const b64toBlob = (b64, type) => {
-        const byteChars = atob(b64);
-        const byteNums = new Array(byteChars.length);
-        for (let i = 0; i < byteChars.length; i++) byteNums[i] = byteChars.charCodeAt(i);
-        return new Blob([new Uint8Array(byteNums)], {type: type});
-    };
-
-    document.getElementById('searchInput').onkeyup = (e) => loadDataFromFirebase();
+    window.searchContent = loadDataFromFirebase;
 </script>
 </body>
-
 </html>
-
