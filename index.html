@@ -31,22 +31,45 @@
         input, select { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box; }
         .pdf-btn { display: inline-block; background: #fef3c7; color: #92400e; padding: 10px 20px; border-radius: 6px; text-decoration: none; font-weight: bold; margin-top: 10px; }
     </style>
+    /* Hiệu ứng hoạt hình cho logo */
+@keyframes bounce {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-10px) rotate(5deg); }
+}
+
+.bird-logo {
+    font-size: 40px; /* Độ lớn của con chim */
+    display: inline-block;
+    animation: bounce 2s infinite ease-in-out; /* Nhún nhảy mỗi 2 giây */
+    cursor: pointer;
+}
+
+.logo-area span {
+    font-size: 24px;
+    background: linear-gradient(45deg, #f59e0b, #ef4444);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: 800;
+}
 </head>
 <body>
 
 <div id="login-page">
     <div class="login-box">
-        <div class="logo-box" style="margin: 0 auto 15px; width: 60px; height: 60px; font-size: 30px;">K</div>
-        <h2>KinderLingo Login</h2>
-        <input type="text" id="username" placeholder="admin">
-        <input type="password" id="password" placeholder="123">
-        <button class="btn btn-primary" style="width:100%" onclick="login()">Enter</button>
-    </div>
+    <div class="bird-logo" style="font-size: 60px;">🐤</div>
+    <h2 style="margin-top: 10px; color: var(--dark);">KinderLingo</h2>
+    <p style="color: #64748b; font-size: 14px;">Welcome to your classroom!</p>
+    <input type="text" id="username" placeholder="admin">
+    ...
+</div>
 </div>
 
 <div id="main-app">
     <header>
-        <div class="logo-area"><div class="logo-box">K</div> KinderLingo</div>
+        <div class="logo-area">
+    <div class="bird-logo">🐤</div> 
+    <span>KinderLingo</span>
+</div>
         <div class="search-bar"><input type="text" id="searchInput" placeholder="Search lessons..."></div>
         <button class="btn" style="background:#f1f5f9; color: var(--danger)" onclick="location.reload()">Exit</button>
     </header>
@@ -198,4 +221,5 @@
     document.getElementById('searchInput').onkeyup = (e) => loadDataFromFirebase();
 </script>
 </body>
+
 </html>
