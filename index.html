@@ -1,117 +1,113 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🐤</text></svg>">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>KinderLingo</title>
+    
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🐤</text></svg>">
+    
     <style>
         :root { --primary: #2563eb; --secondary: #10b981; --bg: #f1f5f9; --danger: #ef4444; --dark: #1e293b; }
+        
+        /* 2. PHÔNG NỀN (BACKGROUND) */
         body { 
-    font-family: 'Segoe UI', sans-serif; 
-    margin: 0; 
-    /* Phông nền màu xanh nhạt phối với tím nhạt trông rất hiện đại */
-    background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
-    background-attachment: fixed; /* Giữ nền cố định khi cuộn trang */
-    color: var(--dark); 
-}
+            font-family: 'Segoe UI', sans-serif; 
+            margin: 0; 
+            /* ÔNG THAY LINK ẢNH CỦA ÔNG VÀO ĐÂY */
+            background-image: url('https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=1920&q=80'); 
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+            color: var(--dark); 
+        }
 
-/* Thêm hiệu ứng kính mờ (Glassmorphism) cho Login Box để nổi bật trên nền */
-.login-box { 
-    background: rgba(255, 255, 255, 0.9); 
-    backdrop-filter: blur(10px); 
-    padding: 40px; 
-    border-radius: 24px; 
-    width: 350px; 
-    text-align: center; 
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-}
-        /* Logo Animation */
+        /* Hiệu ứng nhún nhảy cho logo */
         @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
-        .bird-logo { font-size: 60px; animation: bounce 2s infinite ease-in-out; display: inline-block; cursor: pointer; }
-        
+        .bird-logo { font-size: 50px; animation: bounce 2s infinite ease-in-out; display: inline-block; cursor: pointer; }
+
+        /* Giao diện Login kiểu Kính mờ (Glassmorphism) */
+        #login-page { display: flex; align-items: center; justify-content: center; height: 100vh; background: rgba(30, 41, 59, 0.7); }
+        .login-box { 
+            background: rgba(255, 255, 255, 0.95); 
+            backdrop-filter: blur(10px);
+            padding: 40px; 
+            border-radius: 24px; 
+            width: 350px; 
+            text-align: center; 
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5); 
+        }
+
         #main-app { display: none; min-height: 100vh; flex-direction: column; }
-        header { background: white; padding: 10px 5%; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #e2e8f0; sticky; top: 0; z-index: 100; }
-        .logo-area { display: flex; align-items: center; gap: 10px; font-weight: bold; font-size: 24px; color: var(--primary); }
+        header { background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(5px); padding: 10px 5%; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #ddd; sticky; top: 0; z-index: 100; }
+        .logo-area { display: flex; align-items: center; gap: 10px; font-weight: bold; font-size: 24px; }
         .logo-area span { background: linear-gradient(45deg, #f59e0b, #ef4444); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        
-        .search-bar { flex: 0 1 400px; }
-        .search-bar input { width: 100%; padding: 10px 15px; border-radius: 20px; border: 1px solid #cbd5e1; outline: none; }
+
         .container { display: flex; max-width: 1200px; margin: 20px auto; width: 95%; gap: 20px; }
-        .sidebar { width: 250px; background: white; border-radius: 12px; padding: 15px; height: fit-content; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
-        .menu-item { padding: 12px 15px; margin-bottom: 8px; cursor: pointer; border-radius: 8px; transition: 0.3s; }
+        .sidebar { width: 250px; background: rgba(255, 255, 255, 0.9); border-radius: 15px; padding: 15px; height: fit-content; }
+        .main-content { flex: 1; background: rgba(255, 255, 255, 0.9); border-radius: 15px; padding: 30px; min-height: 400px; }
+
+        .menu-item { padding: 12px 15px; margin-bottom: 8px; cursor: pointer; border-radius: 10px; transition: 0.3s; }
         .menu-item.active { background: #eff6ff; color: var(--primary); font-weight: bold; }
-        .main-content { flex: 1; background: white; border-radius: 12px; padding: 30px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
         .tab-panel { display: none; }
         .tab-panel.active { display: block; }
-        .card { border: 1px solid #e2e8f0; padding: 15px; border-radius: 12px; margin-bottom: 20px; }
-        .video-container { position: relative; padding-bottom: 56.25%; height: 0; margin: 10px 0; border-radius: 8px; overflow: hidden; background: #000; }
+
+        .card { border: 1px solid #eee; padding: 20px; border-radius: 15px; margin-bottom: 20px; background: white; }
+        .video-container { position: relative; padding-bottom: 56.25%; height: 0; margin: 15px 0; border-radius: 10px; overflow: hidden; background: #000; }
         .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
-        .btn { padding: 10px 20px; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; }
-        .btn-primary { background: var(--primary); color: white; }
-        input, select { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box; }
-        .pdf-btn { display: inline-block; background: #fef3c7; color: #92400e; padding: 10px 20px; border-radius: 6px; text-decoration: none; font-weight: bold; margin-top: 10px; }
+        
+        .btn { padding: 12px 20px; border: none; border-radius: 10px; cursor: pointer; font-weight: bold; transition: 0.2s; }
+        .btn-primary { background: var(--primary); color: white; box-shadow: 0 4px 10px rgba(37, 99, 235, 0.3); }
+        .btn-primary:hover { transform: translateY(-2px); opacity: 0.9; }
+        
+        input, select { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 10px; outline: none; }
+        .pdf-btn { display: inline-block; background: #fff7ed; color: #c2410c; padding: 10px 20px; border-radius: 10px; border: 1px solid #fdba74; font-weight: bold; cursor: pointer; }
     </style>
 </head>
 <body>
+
 <div id="login-page">
     <div class="login-box">
         <div class="bird-logo">🐤</div>
-        <h2 style="margin: 10px 0; color: #1e293b;">KinderLingo</h2>
-        <p style="color: #64748b; margin-bottom: 20px; font-size: 14px;">Welcome back, Teacher!</p>
-        
-        <div style="text-align: left;">
-            <label style="font-size: 12px; font-weight: bold; color: #475569;">Username</label>
-            <input type="text" id="username" placeholder="admin" style="margin-top: 5px;">
-            
-            <label style="font-size: 12px; font-weight: bold; color: #475569;">Password</label>
-            <input type="password" id="password" placeholder="123" style="margin-top: 5px;">
-        </div>
-
-        <button class="btn btn-primary" 
-                style="width: 100%; margin-top: 20px; padding: 12px; font-size: 16px; background: #2563eb; box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.4);" 
-                onclick="login()">
-            Start Learning →
-        </button>
-        
-        <p style="margin-top: 20px; font-size: 11px; color: #94a3b8;">Secure Cloud Access Active</p>
+        <h2 style="margin: 10px 0;">KinderLingo</h2>
+        <p style="color: #64748b; font-size: 14px; margin-bottom: 25px;">Ready to explore today?</p>
+        <input type="text" id="username" placeholder="Username (admin)">
+        <input type="password" id="password" placeholder="Password (123)">
+        <button class="btn btn-primary" style="width:100%; margin-top: 10px;" onclick="login()">Enter Classroom</button>
     </div>
 </div>
 
 <div id="main-app">
     <header>
         <div class="logo-area"><div class="bird-logo" style="font-size: 30px;">🐤</div> <span>KinderLingo</span></div>
-        <div class="search-bar"><input type="text" id="searchInput" placeholder="Search lessons..." onkeyup="searchContent()"></div>
-        <button class="btn" style="background:#f1f5f9; color: var(--danger)" onclick="location.reload()">Exit</button>
+        <div style="flex: 0 1 400px;"><input type="text" id="searchInput" placeholder="Search for lessons..." onkeyup="searchContent()" style="margin:0; border-radius: 20px;"></div>
+        <button class="btn" style="background:#fee2e2; color: var(--danger)" onclick="location.reload()">Log out</button>
     </header>
 
     <div class="container">
         <div class="sidebar">
-    <div class="menu-item active" id="btn-view" onclick="openTab('view-content')">
-        <span style="margin-right: 10px;">📚</span> Lessons
-    </div>
-    <div class="menu-item" id="btn-admin" onclick="openTab('admin-panel')">
-        <span style="margin-right: 10px;">🛠️</span> Admin Panel
-    </div>
-</div>
+            <div class="menu-item active" id="btn-view" onclick="openTab('view-content')">📚 Lessons</div>
+            <div class="menu-item" id="btn-admin" onclick="openTab('admin-panel')">🛠️ Administration</div>
+        </div>
+
         <div class="main-content">
             <div id="view-content" class="tab-panel active">
                 <div id="content-list"></div>
             </div>
 
             <div id="admin-panel" class="tab-panel">
-                <h3>Create Content</h3>
-                <div style="background:#f8fafc; padding: 20px; border-radius: 10px;">
-                    <label>Type:</label>
+                <h3 style="margin-top:0">Upload New Material</h3>
+                <div style="background:#f8fafc; padding: 20px; border-radius: 15px; border: 1px dashed #cbd5e1;">
+                    <label>Content Type:</label>
                     <select id="contentType" onchange="toggleInput()">
                         <option value="video">YouTube Video</option>
-                        <option value="pdf">PDF File</option>
+                        <option value="pdf">PDF Document</option>
                     </select>
-                    <input type="text" id="contentTitle" placeholder="Lesson title...">
-                    <input type="text" id="contentLink" placeholder="Paste YouTube link...">
+                    <input type="text" id="contentTitle" placeholder="Enter lesson title...">
+                    <input type="text" id="contentLink" placeholder="Paste YouTube Video URL...">
                     <input type="file" id="contentFile" accept="application/pdf" style="display:none">
-                    <button class="btn btn-primary" style="background:var(--secondary); width:100%" onclick="saveContent()">Save to Cloud</button>
+                    <button class="btn btn-primary" style="background:var(--secondary); width:100%; margin-top:10px" onclick="saveContent()">Push to Cloud ☁️</button>
                 </div>
             </div>
         </div>
@@ -122,6 +118,7 @@
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
     import { getDatabase, ref, push, onValue, remove } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
+    // CẤU HÌNH FIREBASE CỦA ÔNG
     const firebaseConfig = {
         apiKey: "AIzaSyCNxcMDCNliNsBgUTIvdEZGb-92c-L_3cs",
         authDomain: "kinderlingo-b9976.firebaseapp.com",
@@ -141,7 +138,7 @@
             document.getElementById('login-page').style.display = 'none';
             document.getElementById('main-app').style.display = 'flex';
             loadDataFromFirebase();
-        } else alert("Oops! Wrong password.");
+        } else alert("Sai tài khoản hoặc mật khẩu rồi ông ơi!");
     };
 
     window.openTab = function(tabName) {
@@ -161,22 +158,21 @@
         const type = document.getElementById('contentType').value;
         const title = document.getElementById('contentTitle').value;
         let data = "";
-        if (!title) return alert("Please enter a title!");
+        if (!title) return alert("Nhập tiêu đề đã!");
 
         if (type === 'video') {
             const link = document.getElementById('contentLink').value;
             data = link.split('v=')[1]?.split('&')[0] || link.split('/').pop();
         } else {
             const file = document.getElementById('contentFile').files[0];
-            if (!file) return alert("Please select a PDF!");
-            if (file.size > 1.5 * 1024 * 1024) return alert("File too large! (< 1.5MB)");
+            if (!file) return alert("Chưa chọn file PDF kìa!");
             data = await new Promise(res => {
                 const r = new FileReader(); r.onload = () => res(r.result); r.readAsDataURL(file);
             });
         }
 
         push(contentRef, { type, title, data }).then(() => {
-            alert("Lesson saved!");
+            alert("Lưu lên mây thành công!");
             document.getElementById('contentTitle').value = "";
             openTab('view-content');
         });
@@ -187,7 +183,7 @@
             const list = document.getElementById('content-list');
             list.innerHTML = "";
             const data = snapshot.val();
-            if (!data) return list.innerHTML = "No lessons yet. Go to Admin to add some!";
+            if (!data) return list.innerHTML = "<p>Chưa có bài học nào. Vào Admin để thêm nhé!</p>";
 
             const search = document.getElementById('searchInput').value.toLowerCase();
             Object.entries(data).reverse().forEach(([id, item]) => {
@@ -195,20 +191,20 @@
                 const card = document.createElement('div');
                 card.className = 'card';
                 card.innerHTML = `
-                    <div style="display:flex; justify-content:space-between">
-                        <strong>${item.title}</strong>
-                        <button onclick="removeItem('${id}')" style="color:red; border:none; background:none; cursor:pointer">Delete</button>
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                        <strong style="font-size:18px">${item.title}</strong>
+                        <button onclick="removeItem('${id}')" style="color:#ef4444; border:none; background:none; cursor:pointer; font-weight:bold">Delete</button>
                     </div>
                     ${item.type === 'video' ? 
                         `<div class="video-container"><iframe src="https://www.youtube.com/embed/${item.data}"></iframe></div>` : 
-                        `<button onclick="viewPDF('${id}')" class="pdf-btn">📖 Open PDF Document</button>`}
+                        `<button onclick="viewPDF('${id}')" class="pdf-btn">📖 Open PDF Material</button>`}
                 `;
                 list.appendChild(card);
             });
         });
     }
 
-    window.removeItem = (id) => confirm("Delete this lesson?") && remove(ref(db, `study_content/${id}`));
+    window.removeItem = (id) => confirm("Xóa bài này nhé?") && remove(ref(db, `study_content/${id}`));
 
     window.viewPDF = (id) => {
         onValue(ref(db, `study_content/${id}`), (s) => {
@@ -227,5 +223,3 @@
 </script>
 </body>
 </html>
-
-
