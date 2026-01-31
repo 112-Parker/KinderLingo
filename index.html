@@ -3,83 +3,60 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KinderLingo - Full AI Edition</title>
+    <title>KinderLingo - Final Stable Edition</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🐤</text></svg>">
     
     <style>
         * { box-sizing: border-box; }
-        body, html { margin: 0; padding: 0; width: 100%; height: 100%; font-family: 'Segoe UI', sans-serif; }
-
-        /* GIAO DIỆN CŨ MÀU CAM VÀNG */
-        .app-background {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background-image: url('https://images.unsplash.com/photo-1503676260728-1c00da094a0b?q=80&w=1920');
-            background-size: cover; background-position: center; z-index: -1;
-        }
-
+        body, html { margin: 0; padding: 0; width: 100%; height: 100%; font-family: 'Segoe UI', sans-serif; background: #f0f2f5; }
+        .app-background { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: url('https://images.unsplash.com/photo-1503676260728-1c00da094a0b?q=80&w=1920') center/cover; z-index: -1; }
         @keyframes birdBounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
-        .bird-icon { font-size: 50px; display: inline-block; animation: birdBounce 2s infinite ease-in-out; }
+        .bird-icon { font-size: 50px; display: inline-block; animation: birdBounce 2s infinite; }
         .logo-text { font-weight: 800; font-size: 28px; background: linear-gradient(45deg, #f59e0b, #ef4444); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
 
-        /* TRANG CHÍNH */
-        #login-page { position: fixed; top: 0; left: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: rgba(0, 0, 0, 0.5); z-index: 9999; }
-        .login-box { background: white; padding: 40px; border-radius: 25px; width: 340px; text-align: center; box-shadow: 0 15px 35px rgba(0,0,0,0.3); }
-        #main-app { display: none; flex-direction: column; min-height: 100vh; position: relative; z-index: 10; }
-        
         header { background: rgba(255, 255, 255, 0.95); padding: 10px 5%; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 10px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 1000; }
-
         .content-container { display: flex; max-width: 1200px; margin: 25px auto; width: 95%; gap: 20px; }
         .sidebar { width: 240px; background: white; border-radius: 18px; padding: 15px; height: fit-content; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        .display-area { flex: 1; background: rgba(255, 255, 255, 0.9); border-radius: 18px; padding: 30px; min-height: 600px; }
         .menu-btn { padding: 14px 18px; margin-bottom: 8px; cursor: pointer; border-radius: 12px; font-weight: 600; color: #444; }
         .menu-btn.active { background: #f59e0b; color: white; }
 
-        .display-area { flex: 1; background: rgba(255, 255, 255, 0.9); border-radius: 18px; padding: 30px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
-        .content-tab { display: none; }
-        .content-tab.active { display: block; }
-
-        /* BẢNG ĐIỂM */
-        table { width: 100%; border-collapse: collapse; background: white; border-radius: 10px; overflow: hidden; margin-top: 15px; }
+        /* TABLE & CARDS */
+        table { width: 100%; border-collapse: collapse; background: white; border-radius: 10px; overflow: hidden; }
         th, td { padding: 12px; border-bottom: 1px solid #eee; text-align: left; }
         .rank-tag { padding: 4px 10px; border-radius: 12px; font-size: 12px; font-weight: bold; }
         .Giỏi { background: #dcfce7; color: #166534; }
         .Khá { background: #fef9c3; color: #854d0e; }
         .Trung-Bình { background: #fee2e2; color: #991b1b; }
+        .lesson-card { background: white; border-radius: 15px; padding: 20px; margin-bottom: 20px; border: 1px solid #eee; }
 
-        /* CHATBOX AI CHUYÊN NGHIỆP */
-        #ai-toggle {
-            position: fixed; bottom: 25px; right: 25px; width: 65px; height: 65px;
-            background: linear-gradient(45deg, #2563eb, #3b82f6);
-            border-radius: 50%; display: flex; align-items: center; justify-content: center;
-            color: white; font-size: 30px; cursor: pointer; z-index: 9999;
-            box-shadow: 0 10px 25px rgba(37, 99, 235, 0.4);
-        }
-        #ai-container {
-            position: fixed; bottom: 100px; right: 25px; width: 350px; height: 500px;
-            background: white; border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.2);
-            display: none; flex-direction: column; overflow: hidden; z-index: 9999; border: 1px solid #e2e8f0;
-        }
+        /* AI BOX */
+        #ai-toggle { position: fixed; bottom: 25px; right: 25px; width: 65px; height: 65px; background: #2563eb; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 30px; cursor: pointer; z-index: 9999; box-shadow: 0 10px 25px rgba(37,99,235,0.4); }
+        #ai-container { position: fixed; bottom: 100px; right: 25px; width: 350px; height: 500px; background: white; border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.2); display: none; flex-direction: column; overflow: hidden; z-index: 9999; border: 1px solid #e2e8f0; }
         .ai-head { background: #2563eb; color: white; padding: 15px; font-weight: bold; display: flex; justify-content: space-between; }
         .ai-msgs { flex: 1; padding: 15px; overflow-y: auto; background: #f8fafc; display: flex; flex-direction: column; gap: 10px; }
-        .msg { padding: 10px 14px; border-radius: 15px; font-size: 14px; max-width: 85%; line-height: 1.4; word-wrap: break-word; }
-        .msg.bot { background: white; align-self: flex-start; border: 1px solid #ddd; color: #333; }
+        .msg { padding: 10px 14px; border-radius: 15px; font-size: 14px; max-width: 85%; }
+        .msg.bot { background: white; border: 1px solid #ddd; align-self: flex-start; }
         .msg.user { background: #2563eb; color: white; align-self: flex-end; }
         .ai-input-area { padding: 12px; border-top: 1px solid #eee; display: flex; gap: 8px; }
 
-        /* NÚT & FORM */
-        .btn-action { background: #f59e0b; color: white; border: none; padding: 12px; border-radius: 10px; cursor: pointer; font-weight: bold; width: 100%; margin-top: 10px; }
+        /* UI ELEMENTS */
+        #login-page { position: fixed; top: 0; left: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.6); z-index: 10000; }
+        .login-box { background: white; padding: 40px; border-radius: 25px; text-align: center; width: 340px; }
         input, select { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ddd; border-radius: 10px; }
-        .lesson-card { background: white; border-radius: 15px; padding: 20px; margin-bottom: 20px; border: 1px solid #eee; }
+        .btn-action { background: #f59e0b; color: white; border: none; padding: 12px; border-radius: 10px; cursor: pointer; font-weight: bold; width: 100%; }
+        .content-tab { display: none; }
+        .content-tab.active { display: block; }
     </style>
 </head>
 <body>
-
     <div class="app-background"></div>
 
     <div id="ai-toggle" onclick="toggleAI()">🤖</div>
     <div id="ai-container">
-        <div class="ai-head"><span>KinderLingo Super AI</span><span style="cursor:pointer" onclick="toggleAI()">×</span></div>
+        <div class="ai-head"><span>KinderLingo AI Assistant</span><span style="cursor:pointer" onclick="toggleAI()">×</span></div>
         <div class="ai-msgs" id="ai-content">
-            <div class="msg bot">Chào ông! Nhấn gửi để nhập mã kích hoạt AI (chỉ cần làm 1 lần đầu) nhé.</div>
+            <div class="msg bot">Chào ông! Gửi tin nhắn để kích hoạt AI lần đầu nhé.</div>
         </div>
         <div class="ai-input-area">
             <input type="text" id="ai-input" placeholder="Hỏi AI..." onkeypress="if(event.key==='Enter') sendAI()">
@@ -90,53 +67,46 @@
     <div id="login-page">
         <div class="login-box">
             <div class="bird-icon">🐤</div>
-            <div><span class="logo-text">KinderLingo</span></div>
-            <input type="text" id="u" placeholder="Tên đăng nhập">
+            <div class="logo-text">KinderLingo</div>
+            <input type="text" id="u" placeholder="Admin">
             <input type="password" id="p" placeholder="Mật khẩu">
             <button class="btn-action" onclick="handleLogin()">Vào lớp học</button>
         </div>
     </div>
 
-    <div id="main-app">
+    <div id="main-app" style="display:none">
         <header>
             <div style="display:flex; align-items:center; gap:10px">
-                <div class="bird-icon" style="font-size: 25px;">🐤</div>
-                <span class="logo-text" style="font-size: 20px;">KinderLingo</span>
+                <div class="bird-icon" style="font-size:25px">🐤</div>
+                <span class="logo-text" style="font-size:20px">KinderLingo</span>
             </div>
-            <div style="flex:0 1 400px"><input type="text" id="searchBar" placeholder="Tìm bài giảng..." onkeyup="refreshList()" style="margin:0; border-radius: 20px;"></div>
             <button onclick="location.reload()" style="background:#fee2e2; color:red; border:none; padding:8px 15px; border-radius:8px; cursor:pointer; font-weight:bold">Thoát</button>
         </header>
-
         <div class="content-container">
             <div class="sidebar">
                 <div class="menu-btn active" id="btn-lessons" onclick="switchPage('lessons-page')">📚 Bài học</div>
                 <div class="menu-btn" id="btn-scores" onclick="switchPage('scores-page')">📋 Bảng điểm</div>
                 <div class="menu-btn" id="btn-admin" onclick="switchPage('admin-page')">⚙️ Quản lý</div>
             </div>
-
             <div class="display-area">
-                <div id="lessons-page" class="content-tab active">
-                    <div id="lesson-list-container"></div>
-                </div>
-
+                <div id="lessons-page" class="content-tab active"><div id="lesson-list"></div></div>
                 <div id="scores-page" class="content-tab">
                     <h2>Sổ điểm học sinh</h2>
                     <table>
                         <thead><tr><th>Tên bé</th><th>Bài học</th><th>%</th><th>Xếp loại</th></tr></thead>
-                        <tbody id="score-table-body"></tbody>
+                        <tbody id="score-table"></tbody>
                     </table>
                 </div>
-
                 <div id="admin-page" class="content-tab">
-                    <h3>Thêm bài học mới</h3>
-                    <select id="dataType" onchange="adjustInputs()">
+                    <h3>Thêm nội dung</h3>
+                    <select id="type" onchange="toggleForm()">
                         <option value="vid">Video YouTube</option>
                         <option value="doc">File PDF</option>
                     </select>
-                    <input type="text" id="dataTitle" placeholder="Tiêu đề...">
-                    <input type="text" id="dataLink" placeholder="Link YouTube...">
-                    <input type="file" id="dataFile" style="display:none">
-                    <button class="btn-action" style="background:#10b981" onclick="uploadData()">Đăng bài</button>
+                    <input type="text" id="title" placeholder="Tiêu đề bài học">
+                    <input type="text" id="link" placeholder="Link YouTube">
+                    <input type="file" id="file" style="display:none">
+                    <button class="btn-action" onclick="saveData()">Đăng bài</button>
                 </div>
             </div>
         </div>
@@ -144,135 +114,117 @@
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-    import { getDatabase, ref, push, onValue, remove, set } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+    import { getDatabase, ref, push, onValue, remove } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
-    // CẤU HÌNH FIREBASE
     const config = { apiKey: "AIzaSyCNxcMDCNliNsBgUTIvdEZGb-92c-L_3cs", authDomain: "kinderlingo-b9976.firebaseapp.com", databaseURL: "https://kinderlingo-b9976-default-rtdb.firebaseio.com/", projectId: "kinderlingo-b9976", storageBucket: "kinderlingo-b9976.firebasestorage.app", messagingSenderId: "946131764403", appId: "1:946131764403:web:5f1529ab8bfd70716b9cc6" };
-    const app = initializeApp(config);
-    const db = getDatabase(app);
-    const dbRef = ref(db, 'study_content');
-    const scoreRef = ref(db, 'student_scores');
+    const app = initializeApp(config); const db = getDatabase(app);
 
-    // CẤU HÌNH AI (BẢO MẬT)
     let HF_TOKEN = localStorage.getItem("hf_key") || "";
-    const MODEL_NAME = "mistralai/Mistral-7B-Instruct-v0.2";
 
-    // --- LOGIC HÀNH ĐỘNG ---
-    window.handleLogin = () => { if(document.getElementById('u').value==='admin') { document.getElementById('login-page').style.display='none'; document.getElementById('main-app').style.display='flex'; refreshList(); refreshScores(); } };
-    
-    window.switchPage = (id) => { 
+    window.handleLogin = () => {
+        if(document.getElementById('u').value === 'admin') {
+            document.getElementById('login-page').style.display='none';
+            document.getElementById('main-app').style.display='block';
+            refreshAll();
+        }
+    };
+
+    window.switchPage = (id) => {
         document.querySelectorAll('.content-tab').forEach(t=>t.classList.remove('active'));
         document.querySelectorAll('.menu-btn').forEach(b=>b.classList.remove('active'));
         document.getElementById(id).classList.add('active');
         document.getElementById('btn-'+id.split('-')[0]).classList.add('active');
     };
 
-    window.toggleAI = () => { const el = document.getElementById('ai-container'); el.style.display = el.style.display==='flex'?'none':'flex'; };
+    window.toggleAI = () => {
+        const el = document.getElementById('ai-container');
+        el.style.display = el.style.display==='flex'?'none':'flex';
+    };
 
     window.sendAI = async () => {
         if (!HF_TOKEN) {
-            const key = prompt("Vui lòng dán mã Token Hugging Face mới (hf_...) vào đây:");
+            const key = prompt("Vui lòng dán mã Hugging Face Token (hf_...) mới vào đây:");
             if (key) { HF_TOKEN = key; localStorage.setItem("hf_key", key); } else return;
         }
         const input = document.getElementById('ai-input');
-        const text = input.value.trim();
-        if(!text) return;
-
+        const text = input.value.trim(); if(!text) return;
         const box = document.getElementById('ai-content');
         box.innerHTML += `<div class="msg user">${text}</div>`;
         input.value = "";
+        
+        const loadId = "bot-"+Date.now();
+        box.innerHTML += `<div class="msg bot" id="${loadId}">Đang suy nghĩ...</div>`;
         box.scrollTop = box.scrollHeight;
 
-        const loadId = "bot-" + Date.now();
-        box.innerHTML += `<div class="msg bot" id="${loadId}">AI đang suy nghĩ...</div>`;
-
         try {
-            const res = await fetch(`https://api-inference.huggingface.co/models/${MODEL_NAME}`, {
+            const res = await fetch("https://api-inference.huggingface.co/models/mistralai/Mistral-7B-Instruct-v0.2", {
                 headers: { Authorization: `Bearer ${HF_TOKEN}`, "Content-Type": "application/json" },
                 method: "POST",
-                body: JSON.stringify({
-                    inputs: `<s>[INST] Bạn là trợ lý giáo dục mầm non KinderLingo. Hãy trả lời cực kỳ ngắn gọn, thân thiện bằng tiếng Việt câu hỏi này: ${text} [/INST]`,
-                }),
+                body: JSON.stringify({ inputs: `[INST] Trả lời cực ngắn gọn bằng tiếng Việt: ${text} [/INST]` }),
             });
-            const result = await res.json();
-            if (result.error) throw new Error();
-            let aiReply = result[0]?.generated_text.split('[/INST]').pop().trim();
-            document.getElementById(loadId).innerText = aiReply;
+            const data = await res.json();
+            if(data.error) throw new Error();
+            document.getElementById(loadId).innerText = data[0].generated_text.split('[/INST]').pop().trim();
         } catch (e) {
-            document.getElementById(loadId).innerText = "Lỗi kết nối AI hoặc Token sai!";
+            document.getElementById(loadId).innerText = "Lỗi kết nối AI hoặc Token sai! Vui lòng thử lại.";
             localStorage.removeItem("hf_key"); HF_TOKEN = "";
         }
         box.scrollTop = box.scrollHeight;
     };
 
-    // --- QUẢN LÝ DỮ LIỆU ---
-    window.gradeStudent = (lessonTitle) => {
-        const name = prompt("Tên học sinh:");
+    window.toggleForm = () => {
+        const isDoc = document.getElementById('type').value === 'doc';
+        document.getElementById('link').style.display = isDoc ? 'none' : 'block';
+        document.getElementById('file').style.display = isDoc ? 'block' : 'none';
+    };
+
+    window.saveData = async () => {
+        const type = document.getElementById('type').value;
+        const title = document.getElementById('title').value;
+        let data = "";
+        if(type === 'vid') data = document.getElementById('link').value.split('v=')[1]?.split('&')[0] || document.getElementById('link').value.split('/').pop();
+        else {
+            const f = document.getElementById('file').files[0];
+            data = await new Promise(res => { const r = new FileReader(); r.onload = () => res(r.result); r.readAsDataURL(f); });
+        }
+        push(ref(db, 'study_content'), { type, title, data });
+        switchPage('lessons-page');
+    };
+
+    window.grade = (title) => {
+        const name = prompt("Tên bé:");
         const score = prompt("Số câu đúng:");
         const total = prompt("Tổng số câu:");
-        if (name && score && total) {
+        if(name && score && total) {
             const pct = Math.round((score/total)*100);
             const rank = pct>=80?"Giỏi":pct>=50?"Khá":"Trung-Bình";
-            push(scoreRef, { student: name, lesson: lessonTitle, result: pct+"%", rank: rank });
+            push(ref(db, 'student_scores'), { student: name, lesson: title, result: pct+"%", rank: rank });
             alert("Đã lưu điểm!");
         }
     };
 
-    window.uploadData = async () => {
-        const type = document.getElementById('dataType').value;
-        const title = document.getElementById('dataTitle').value;
-        let finalData = "";
-        if(type === 'vid') {
-            const url = document.getElementById('dataLink').value;
-            finalData = url.split('v=')[1]?.split('&')[0] || url.split('/').pop();
-        } else {
-            const f = document.getElementById('dataFile').files[0];
-            finalData = await new Promise(res => { const r = new FileReader(); r.onload = () => res(r.result); r.readAsDataURL(f); });
-        }
-        push(dbRef, { type, title, data: finalData });
-        switchPage('lessons-page');
-    };
+    window.del = (id) => confirm("Xóa bài này?") && remove(ref(db, 'study_content/'+id));
 
-    function refreshList() {
-        onValue(dbRef, (s) => {
-            const container = document.getElementById('lesson-list-container');
-            container.innerHTML = "";
+    function refreshAll() {
+        onValue(ref(db, 'study_content'), (s) => {
+            const cont = document.getElementById('lesson-list'); cont.innerHTML = "";
             const vals = s.val(); if(!vals) return;
             Object.entries(vals).reverse().forEach(([id, item]) => {
-                const card = document.createElement('div'); card.className = 'lesson-card';
-                card.innerHTML = `
-                    <div style="display:flex; justify-content:space-between"><b>${item.title}</b><span onclick="delItem('${id}')" style="cursor:pointer; color:#ccc">Xóa</span></div>
-                    ${item.type==='vid' ? `<iframe width="100%" height="220" src="https://www.youtube.com/embed/${item.data}" frameborder="0" style="border-radius:15px; margin:10px 0"></iframe>` : 
-                    `<button onclick="openPDF('${id}')" style="width:100%; padding:15px; margin:10px 0; border-radius:10px; cursor:pointer">📖 Xem tài liệu PDF</button>`}
-                    <button class="btn-action" style="background:#2563eb" onclick="gradeStudent('${item.title}')">✓ Chấm điểm học sinh</button>`;
-                container.appendChild(card);
+                cont.innerHTML += `<div class="lesson-card">
+                    <div style="display:flex; justify-content:space-between"><b>${item.title}</b><span onclick="del('${id}')" style="cursor:pointer; color:#ccc">Xóa</span></div>
+                    ${item.type==='vid' ? `<iframe width="100%" height="220" src="https://www.youtube.com/embed/${item.data}" frameborder="0" style="border-radius:15px; margin:10px 0"></iframe>` : `<button onclick="window.open('${item.data}')" style="width:100%; padding:15px; margin:10px 0; border-radius:10px; cursor:pointer">📖 Xem PDF</button>`}
+                    <button class="btn-action" style="background:#2563eb" onclick="grade('${item.title}')">✓ Chấm điểm</button>
+                </div>`;
             });
         });
-    }
-
-    function refreshScores() {
-        onValue(scoreRef, (s) => {
-            const tbody = document.getElementById('score-table-body'); tbody.innerHTML = "";
-            const data = s.val(); if(!data) return;
-            Object.values(data).reverse().forEach(i => {
+        onValue(ref(db, 'student_scores'), (s) => {
+            const tbody = document.getElementById('score-table'); tbody.innerHTML = "";
+            const vals = s.val(); if(!vals) return;
+            Object.values(vals).reverse().forEach(i => {
                 tbody.innerHTML += `<tr><td>${i.student}</td><td>${i.lesson}</td><td>${i.result}</td><td><span class="rank-tag ${i.rank}">${i.rank}</span></td></tr>`;
             });
         });
     }
-
-    window.delItem = (id) => confirm("Xóa bài?") && remove(ref(db, 'study_content/'+id));
-    window.openPDF = (id) => {
-        onValue(ref(db, 'study_content/'+id), (s) => {
-            const item = s.val();
-            const url = URL.createObjectURL(new Blob([new Uint8Array(atob(item.data.split(',')[1]).split('').map(c => c.charCodeAt(0)))], {type: 'application/pdf'}));
-            window.open(url, '_blank');
-        }, {onlyOnce: true});
-    };
-    window.adjustInputs = () => {
-        const isDoc = document.getElementById('dataType').value === 'doc';
-        document.getElementById('dataLink').style.display = isDoc ? 'none' : 'block';
-        document.getElementById('dataFile').style.display = isDoc ? 'block' : 'none';
-    };
 </script>
 </body>
 </html>
