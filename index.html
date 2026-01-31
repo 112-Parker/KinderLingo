@@ -7,162 +7,238 @@
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🐤</text></svg>">
     
     <style>
-        /* GIỮ NGUYÊN CSS CŨ VÀ THÊM CSS CHO CHATBOX */
         * { box-sizing: border-box; }
-        body, html { margin: 0; padding: 0; width: 100%; height: 100%; font-family: 'Segoe UI', sans-serif; background: #f0f2f5; }
-        .app-background { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-image: url('https://images.unsplash.com/photo-1503676260728-1c00da094a0b?q=80&w=1920'); background-size: cover; background-position: center; z-index: -1; }
-        
-        /* CSS GIAO DIỆN CHÍNH (RÚT GỌN CHO GỌN) */
-        header { background: rgba(255, 255, 255, 0.95); padding: 10px 5%; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 10px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 1000; }
+        body, html { margin: 0; padding: 0; width: 100%; height: 100%; font-family: 'Segoe UI', sans-serif; }
+
+        /* LỚP NỀN DƯỚI CÙNG */
+        .app-background {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-image: url('https://images.unsplash.com/photo-1503676260728-1c00da094a0b?q=80&w=1920');
+            background-size: cover; background-position: center; z-index: -1;
+        }
+
+        /* CON CHIM NHẢY & CHỮ VÀNG CAM */
+        @keyframes birdBounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
+        .bird-icon { font-size: 50px; display: inline-block; animation: birdBounce 2s infinite ease-in-out; }
+        .logo-text { font-weight: 800; font-size: 28px; background: linear-gradient(45deg, #f59e0b, #ef4444); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+
+        /* GIAO DIỆN CHÍNH */
+        #login-page { position: fixed; top: 0; left: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: rgba(0, 0, 0, 0.5); z-index: 9999; }
+        .login-box { background: white; padding: 40px; border-radius: 25px; width: 340px; text-align: center; box-shadow: 0 15px 35px rgba(0,0,0,0.3); }
         #main-app { display: none; flex-direction: column; min-height: 100vh; position: relative; z-index: 10; }
+        header { background: rgba(255, 255, 255, 0.95); padding: 10px 5%; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 10px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 1000; }
+
         .content-container { display: flex; max-width: 1200px; margin: 25px auto; width: 95%; gap: 20px; }
-        .sidebar { width: 240px; background: white; border-radius: 18px; padding: 15px; height: fit-content; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
-        .display-area { flex: 1; background: rgba(255, 255, 255, 0.9); border-radius: 18px; padding: 30px; min-height: 600px; }
+        .sidebar { width: 240px; background: white; border-radius: 18px; padding: 15px; height: fit-content; box-shadow: 0 5px 15px rgba(0,0,0,0.1); z-index: 500; }
         .menu-btn { padding: 14px 18px; margin-bottom: 8px; cursor: pointer; border-radius: 12px; font-weight: 600; color: #444; }
         .menu-btn.active { background: #f59e0b; color: white; }
+
+        .display-area { flex: 1; background: rgba(255, 255, 255, 0.9); border-radius: 18px; padding: 30px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
         .content-tab { display: none; }
         .content-tab.active { display: block; }
 
-        /* CSS CHO BÓNG CHAT AI */
-        #ai-chat-bubble {
-            position: fixed; bottom: 30px; right: 30px;
-            width: 60px; height: 60px; background: #2563eb;
-            border-radius: 50%; display: flex; align-items: center; justify-content: center;
-            color: white; font-size: 30px; cursor: pointer;
-            box-shadow: 0 10px 25px rgba(37, 99, 235, 0.5);
-            z-index: 9999; transition: 0.3s;
-        }
-        #ai-chat-bubble:hover { transform: scale(1.1); }
-
-        #ai-window {
-            position: fixed; bottom: 100px; right: 30px;
-            width: 350px; height: 500px; background: white;
-            border-radius: 20px; box-shadow: 0 15px 50px rgba(0,0,0,0.2);
-            display: none; flex-direction: column; overflow: hidden; z-index: 9999;
-        }
-        .ai-header { background: #2563eb; color: white; padding: 15px; font-weight: bold; display: flex; justify-content: space-between; }
-        .ai-body { flex: 1; padding: 15px; overflow-y: auto; background: #f8fafc; display: flex; flex-direction: column; gap: 10px; }
-        .ai-footer { padding: 10px; border-top: 1px solid #eee; display: flex; gap: 5px; }
-        
-        .msg { padding: 10px 15px; border-radius: 15px; max-width: 80%; font-size: 14px; line-height: 1.4; }
-        .msg.bot { background: white; align-self: flex-start; border: 1px solid #e2e8f0; }
-        .msg.user { background: #2563eb; color: white; align-self: flex-end; }
-        
-        /* TABLE & CARDS */
-        table { width: 100%; border-collapse: collapse; background: white; border-radius: 10px; overflow: hidden; }
+        /* BẢNG ĐIỂM */
+        table { width: 100%; border-collapse: collapse; background: white; border-radius: 10px; overflow: hidden; margin-top: 15px; }
         th, td { padding: 12px; border-bottom: 1px solid #eee; text-align: left; }
-        .btn-action { background: #f59e0b; color: white; border: none; padding: 12px; border-radius: 10px; cursor: pointer; font-weight: bold; width: 100%; margin-top: 10px; }
-        .lesson-card { background: white; border-radius: 15px; padding: 20px; margin-bottom: 20px; border: 1px solid #eee; }
         .rank-tag { padding: 4px 10px; border-radius: 12px; font-size: 12px; font-weight: bold; }
         .Giỏi { background: #dcfce7; color: #166534; }
         .Khá { background: #fef9c3; color: #854d0e; }
         .Trung-Bình { background: #fee2e2; color: #991b1b; }
+
+        /* --- CHATBOX AI CHUYÊN NGHIỆP --- */
+        #ai-toggle {
+            position: fixed; bottom: 25px; right: 25px; width: 65px; height: 65px;
+            background: linear-gradient(45deg, #2563eb, #3b82f6);
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            color: white; font-size: 30px; cursor: pointer; z-index: 9999;
+            box-shadow: 0 10px 25px rgba(37, 99, 235, 0.4); transition: 0.3s;
+        }
+        #ai-container {
+            position: fixed; bottom: 100px; right: 25px; width: 350px; height: 500px;
+            background: white; border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            display: none; flex-direction: column; overflow: hidden; z-index: 9999; border: 1px solid #e2e8f0;
+        }
+        .ai-head { background: #2563eb; color: white; padding: 15px; font-weight: bold; display: flex; justify-content: space-between; }
+        .ai-msgs { flex: 1; padding: 15px; overflow-y: auto; background: #f8fafc; display: flex; flex-direction: column; gap: 10px; }
+        .msg { padding: 10px 14px; border-radius: 15px; font-size: 14px; max-width: 85%; line-height: 1.4; }
+        .msg.bot { background: white; align-self: flex-start; border: 1px solid #ddd; color: #333; }
+        .msg.user { background: #2563eb; color: white; align-self: flex-end; }
+        .ai-input-area { padding: 12px; border-top: 1px solid #eee; display: flex; gap: 8px; }
+
+        /* BUTTONS & OTHERS */
+        .btn-action { background: #f59e0b; color: white; border: none; padding: 12px; border-radius: 10px; cursor: pointer; font-weight: bold; width: 100%; margin-top: 10px; }
+        input, select { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ddd; border-radius: 10px; }
+        .lesson-card { background: white; border-radius: 15px; padding: 20px; margin-bottom: 20px; border: 1px solid #eee; }
     </style>
 </head>
 <body>
 
     <div class="app-background"></div>
 
-    <div id="ai-chat-bubble" onclick="toggleAI()">🤖</div>
-    
-    <div id="ai-window">
-        <div class="ai-header">
-            <span>Trợ lý KinderLingo AI</span>
-            <span style="cursor:pointer" onclick="toggleAI()">×</span>
+    <div id="ai-toggle" onclick="toggleAI()">🤖</div>
+    <div id="ai-container">
+        <div class="ai-head"><span>Trợ lý KinderLingo AI</span><span style="cursor:pointer" onclick="toggleAI()">×</span></div>
+        <div class="ai-msgs" id="ai-content">
+            <div class="msg bot">Chào thầy cô và phụ huynh! Con là AI KinderLingo, con có thể giúp gì cho mình ạ?</div>
         </div>
-        <div class="ai-body" id="ai-messages">
-            <div class="msg bot">Xin chào! Tôi là AI hỗ trợ KinderLingo. Tôi có thể giúp thầy cô soạn bài hoặc giải đáp cho phụ huynh ạ!</div>
-        </div>
-        <div class="ai-footer">
-            <input type="text" id="ai-input" placeholder="Nhập câu hỏi..." style="width:100%; padding:8px; border:1px solid #ddd; border-radius:10px;">
-            <button onclick="askAI()" style="background:#2563eb; color:white; border:none; border-radius:10px; padding:0 15px; cursor:pointer">Gửi</button>
+        <div class="ai-input-area">
+            <input type="text" id="ai-input" placeholder="Hỏi AI điều gì đó..." onkeypress="if(event.key==='Enter') sendAI()">
+            <button onclick="sendAI()" style="background:#2563eb; color:white; border:none; padding:8px 15px; border-radius:10px; cursor:pointer">Gửi</button>
         </div>
     </div>
 
     <div id="login-page">
         <div class="login-box">
-            <div style="font-size:50px">🐤</div>
-            <h2 style="background: linear-gradient(45deg, #f59e0b, #ef4444); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">KinderLingo</h2>
-            <input type="text" id="u" placeholder="Admin name">
-            <input type="password" id="p" placeholder="Password">
-            <button class="btn-action" onclick="handleLogin()">Vào trang quản lý</button>
+            <div class="bird-icon">🐤</div>
+            <div><span class="logo-text">KinderLingo</span></div>
+            <input type="text" id="u" placeholder="Tên đăng nhập">
+            <input type="password" id="p" placeholder="Mật khẩu">
+            <button class="btn-action" onclick="handleLogin()">Bắt đầu ngay</button>
         </div>
     </div>
 
     <div id="main-app">
         <header>
-            <div style="font-weight:bold; color:#f59e0b">🐤 KinderLingo AI</div>
-            <button onclick="location.reload()" style="background:#fee2e2; color:red; border:none; padding:8px 15px; border-radius:8px; cursor:pointer">Thoát</button>
+            <div style="display:flex; align-items:center; gap:10px">
+                <div class="bird-icon" style="font-size: 25px;">🐤</div>
+                <span class="logo-text" style="font-size: 20px;">KinderLingo</span>
+            </div>
+            <div style="flex:0 1 400px"><input type="text" id="searchBar" placeholder="Tìm bài học..." onkeyup="refreshList()" style="margin:0; border-radius: 20px;"></div>
+            <button onclick="location.reload()" style="background:#fee2e2; color:red; border:none; padding:8px 15px; border-radius:8px; cursor:pointer; font-weight:bold">Thoát</button>
         </header>
 
         <div class="content-container">
             <div class="sidebar">
                 <div class="menu-btn active" id="btn-lessons" onclick="switchPage('lessons-page')">📚 Bài học</div>
-                <div class="menu-btn" id="btn-scores" onclick="switchPage('scores-page')">📋 Sổ điểm học sinh</div>
-                <div class="menu-btn" id="btn-admin" onclick="switchPage('admin-page')">⚙️ Cài đặt</div>
+                <div class="menu-btn" id="btn-scores" onclick="switchPage('scores-page')">📋 Bảng điểm</div>
+                <div class="menu-btn" id="btn-admin" onclick="switchPage('admin-page')">⚙️ Quản lý</div>
             </div>
 
             <div class="display-area">
                 <div id="lessons-page" class="content-tab active"><div id="lesson-list-container"></div></div>
                 <div id="scores-page" class="content-tab">
-                    <h2>Bảng điểm chi tiết</h2>
-                    <table><thead><tr><th>Tên bé</th><th>Bài học</th><th>Điểm</th><th>Xếp loại</th></tr></thead><tbody id="score-table-body"></tbody></table>
+                    <h2>Sổ điểm học sinh</h2>
+                    <table>
+                        <thead><tr><th>Tên bé</th><th>Bài học</th><th>%</th><th>Xếp loại</th></tr></thead>
+                        <tbody id="score-table-body"></tbody>
+                    </table>
                 </div>
                 <div id="admin-page" class="content-tab">
-                    <h3>Đăng bài học mới</h3>
-                    <select id="dataType" onchange="document.getElementById('dataLink').style.display = this.value==='doc'?'none':'block'; document.getElementById('dataFile').style.display = this.value==='doc'?'block':'none';">
-                        <option value="vid">Video</option><option value="doc">PDF</option>
+                    <h3>Thêm bài mới</h3>
+                    <select id="dataType" onchange="adjustInputs()">
+                        <option value="vid">Video YouTube</option>
+                        <option value="doc">File PDF</option>
                     </select>
-                    <input type="text" id="dataTitle" placeholder="Tên bài học">
-                    <input type="text" id="dataLink" placeholder="Link YouTube">
+                    <input type="text" id="dataTitle" placeholder="Tiêu đề...">
+                    <input type="text" id="dataLink" placeholder="Link...">
                     <input type="file" id="dataFile" style="display:none">
-                    <button class="btn-action" style="background:#10b981" onclick="uploadData()">Lưu bài</button>
+                    <button class="btn-action" style="background:#10b981" onclick="uploadData()">Đăng bài</button>
                 </div>
             </div>
         </div>
     </div>
 
 <script type="module">
-    // --- PHẦN FIREBASE (GIỮ NGUYÊN CỦA ÔNG) ---
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
     import { getDatabase, ref, push, onValue, remove, set } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
     const config = { apiKey: "AIzaSyCNxcMDCNliNsBgUTIvdEZGb-92c-L_3cs", authDomain: "kinderlingo-b9976.firebaseapp.com", databaseURL: "https://kinderlingo-b9976-default-rtdb.firebaseio.com/", projectId: "kinderlingo-b9976", storageBucket: "kinderlingo-b9976.firebasestorage.app", messagingSenderId: "946131764403", appId: "1:946131764403:web:5f1529ab8bfd70716b9cc6" };
     const app = initializeApp(config); const db = getDatabase(app);
     const dbRef = ref(db, 'study_content'); const scoreRef = ref(db, 'student_scores');
 
-    // --- LOGIC GIAO DIỆN ---
+    // LOGIC ĐĂNG NHẬP & CHUYỂN TAB
     window.handleLogin = () => { if(document.getElementById('u').value==='admin') { document.getElementById('login-page').style.display='none'; document.getElementById('main-app').style.display='flex'; refreshList(); refreshScores(); } };
-    window.switchPage = (id) => { document.querySelectorAll('.content-tab').forEach(t=>t.classList.remove('active')); document.querySelectorAll('.menu-btn').forEach(b=>b.classList.remove('active')); document.getElementById(id).classList.add('active'); document.getElementById('btn-'+id.split('-')[0]).classList.add('active'); };
-
-    // --- LOGIC CHAT AI (SỬ DỤNG API MIỄN PHÍ) ---
-    window.toggleAI = () => { const win = document.getElementById('ai-window'); win.style.display = win.style.display === 'flex' ? 'none' : 'flex'; };
-    
-    window.askAI = async () => {
-        const input = document.getElementById('ai-input');
-        const msg = input.value.trim();
-        if(!msg) return;
-
-        // Hiển thị tin nhắn user
-        const box = document.getElementById('ai-messages');
-        box.innerHTML += `<div class="msg user">${msg}</div>`;
-        input.value = "";
-        box.scrollTop = box.scrollHeight;
-
-        // Gọi AI (Sử dụng DuckDuckGo AI API - Giả lập qua Proxy hoặc API công cộng đơn giản)
-        // Lưu ý: Ở bản Demo này tôi dùng một logic phản hồi thông minh dựa trên từ khóa cho nhanh
-        setTimeout(() => {
-            let response = "Tôi đang học hỏi thêm. Thầy cô muốn soạn bài về chủ đề gì ạ?";
-            if(msg.toLowerCase().includes("chào")) response = "Chào thầy cô! Chúc thầy cô một ngày dạy học thật vui!";
-            if(msg.toLowerCase().includes("soạn bài")) response = "Thầy cô hãy cho biết độ tuổi của bé, tôi sẽ gợi ý giáo án phù hợp!";
-            if(msg.toLowerCase().includes("điểm")) response = "Thầy cô có thể kiểm tra ở Tab 'Sổ điểm' nhé!";
-            
-            box.innerHTML += `<div class="msg bot">${response}</div>`;
-            box.scrollTop = box.scrollHeight;
-        }, 1000);
+    window.switchPage = (id) => { 
+        document.querySelectorAll('.content-tab').forEach(t=>t.classList.remove('active'));
+        document.querySelectorAll('.menu-btn').forEach(b=>b.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+        document.getElementById('btn-'+id.split('-')[0]).classList.add('active');
     };
 
-    // (Các hàm uploadData, refreshList, refreshScores... giữ nguyên như bản v4 của ông)
-    // Tôi rút gọn lại để ông dễ đọc, ông cứ dán đè bản v4 vào phần script này là chạy.
+    // LOGIC CHAT AI
+    window.toggleAI = () => { const el = document.getElementById('ai-container'); el.style.display = el.style.display==='flex'?'none':'flex'; };
+    window.sendAI = () => {
+        const input = document.getElementById('ai-input');
+        const text = input.value.trim();
+        if(!text) return;
+        const box = document.getElementById('ai-content');
+        box.innerHTML += `<div class="msg user">${text}</div>`;
+        input.value = "";
+        
+        setTimeout(() => {
+            let reply = "Tôi có thể giúp bạn tìm bài giảng hoặc tư vấn cách dạy trẻ hiệu quả!";
+            if(text.toLowerCase().includes("soạn bài")) reply = "Để soạn bài hiệu quả, thầy cô hãy kết hợp hình ảnh sinh động và trò chơi nhé!";
+            if(text.toLowerCase().includes("chào")) reply = "Chào thầy cô! Chúc thầy cô một buổi dạy đầy năng lượng!";
+            box.innerHTML += `<div class="msg bot">${reply}</div>`;
+            box.scrollTop = box.scrollHeight;
+        }, 800);
+    };
+
+    // GIỮ NGUYÊN CÁC HÀM CŨ (Upload, Refresh, Grade...)
+    window.adjustInputs = () => {
+        const isDoc = document.getElementById('dataType').value === 'doc';
+        document.getElementById('dataLink').style.display = isDoc ? 'none' : 'block';
+        document.getElementById('dataFile').style.display = isDoc ? 'block' : 'none';
+    };
+
+    window.gradeStudent = (lessonTitle) => {
+        const studentName = prompt("Tên bé:");
+        const score = prompt("Số câu đúng:");
+        const total = prompt("Tổng số câu:");
+        if (studentName && score && total) {
+            const pct = Math.round((score/total)*100);
+            const rank = pct>=80?"Giỏi":pct>=50?"Khá":"Trung-Bình";
+            push(scoreRef, { student: studentName, lesson: lessonTitle, result: pct+"%", rank: rank });
+        }
+    };
+
+    window.uploadData = async () => {
+        const type = document.getElementById('dataType').value;
+        const title = document.getElementById('dataTitle').value;
+        let finalData = "";
+        if(type === 'vid') finalData = document.getElementById('dataLink').value.split('v=')[1]?.split('&')[0] || document.getElementById('dataLink').value.split('/').pop();
+        else {
+            const f = document.getElementById('dataFile').files[0];
+            finalData = await new Promise(res => { const r = new FileReader(); r.onload = () => res(r.result); r.readAsDataURL(f); });
+        }
+        push(dbRef, { type, title, data: finalData });
+        switchPage('lessons-page');
+    };
+
+    function refreshList() {
+        onValue(dbRef, (s) => {
+            const container = document.getElementById('lesson-list-container');
+            container.innerHTML = "";
+            const vals = s.val(); if(!vals) return;
+            Object.entries(vals).reverse().forEach(([id, item]) => {
+                const card = document.createElement('div'); card.className = 'lesson-card';
+                card.innerHTML = `
+                    <div style="display:flex; justify-content:space-between"><b>${item.title}</b><span onclick="delItem('${id}')" style="cursor:pointer; color:#ccc">Xóa</span></div>
+                    ${item.type==='vid' ? `<iframe width="100%" height="200" src="https://www.youtube.com/embed/${item.data}" frameborder="0" style="border-radius:10px; margin:10px 0"></iframe>` : `<button onclick="openPDF('${id}')" style="width:100%; padding:10px; margin:10px 0; border-radius:10px; cursor:pointer">📖 Xem PDF</button>`}
+                    <button class="btn-action" style="background:#2563eb" onclick="gradeStudent('${item.title}')">✓ Chấm điểm bé</button>`;
+                container.appendChild(card);
+            });
+        });
+    }
+
+    function refreshScores() {
+        onValue(scoreRef, (s) => {
+            const tbody = document.getElementById('score-table-body'); tbody.innerHTML = "";
+            const data = s.val(); if(!data) return;
+            Object.values(data).reverse().forEach(i => {
+                tbody.innerHTML += `<tr><td>${i.student}</td><td>${i.lesson}</td><td>${i.result}</td><td><span class="rank-tag ${i.rank}">${i.rank}</span></td></tr>`;
+            });
+        });
+    }
+
+    window.delItem = (id) => confirm("Xóa?") && remove(ref(db, 'study_content/'+id));
+    window.openPDF = (id) => {
+        onValue(ref(db, 'study_content/'+id), (s) => {
+            const item = s.val();
+            const url = URL.createObjectURL(new Blob([new Uint8Array(atob(item.data.split(',')[1]).split('').map(c => c.charCodeAt(0)))], {type: 'application/pdf'}));
+            window.open(url, '_blank');
+        }, {onlyOnce: true});
+    };
 </script>
 </body>
 </html>
