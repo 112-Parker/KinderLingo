@@ -3,165 +3,200 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KinderLingo - Lớp học Vui vẻ</title>
+    <title>KinderLingo - Giáo dục Mầm Non</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🐤</text></svg>">
     <style>
         :root {
-            --primary: #FFD233; --secondary: #FF6F61; --accent: #6FCF97; --bg: #FFF8E6;
+            --primary: #ff9f43;
+            --secondary: #ff6b6b;
+            --accent: #48dbfb;
+            --bg: #f7f9fc;
+            --text: #2d3436;
         }
-        * { box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        body, html { margin: 0; padding: 0; width: 100%; height: 100%; background: var(--bg); overflow-x: hidden; }
 
-        /* Trang Login Sinh Động */
-        #login-page {
-            position: fixed; inset: 0; z-index: 10000;
-            background: linear-gradient(135deg, #FFD233 0%, #FF6F61 100%);
-            display: flex; align-items: center; justify-content: center;
-        }
-        .login-box {
-            background: white; padding: 40px; border-radius: 30px; text-align: center;
-            width: 90%; max-width: 400px; box-shadow: 0 15px 35px rgba(0,0,0,0.2);
-            animation: slideUp 0.6s ease-out;
-        }
-        @keyframes slideUp { from { opacity: 0; transform: translateY(50px); } to { opacity: 1; transform: translateY(0); } }
+        * { box-sizing: border-box; font-family: 'Segoe UI', cursive, sans-serif; }
+        body, html { margin: 0; padding: 0; width: 100%; height: 100%; background: var(--bg); color: var(--text); }
 
-        /* Header & Layout */
+        /* Nền họa tiết mầm non */
+        .app-background {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(135deg, #fff5e6 0%, #ffecda 100%);
+            z-index: -1;
+        }
+
         header {
-            background: white; padding: 15px 5%; display: flex; justify-content: space-between; 
-            align-items: center; box-shadow: 0 4px 10px rgba(0,0,0,0.05); position: sticky; top: 0; z-index: 100;
-        }
-        .main-container {
-            display: flex; flex-wrap: wrap; max-width: 1200px; margin: 20px auto; padding: 0 15px; gap: 20px;
-        }
-        .sidebar {
-            flex: 0 0 250px; background: white; border-radius: 20px; padding: 20px; 
-            height: fit-content; box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-        }
-        .display-area {
-            flex: 1; min-width: 300px; background: rgba(255,255,255,0.7); 
-            border-radius: 25px; padding: 25px; box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            background: white; padding: 10px 5%;
+            display: flex; justify-content: space-between; align-items: center;
+            box-shadow: 0 4px 15px rgba(255, 159, 67, 0.2);
+            position: sticky; top: 0; z-index: 1000; border-bottom: 3px solid var(--primary);
         }
 
-        /* Nút Menu */
+        .logo-box { display: flex; align-items: center; gap: 12px; }
+        .logo-text { font-size: 26px; font-weight: 900; background: linear-gradient(to right, var(--primary), var(--secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+
+        /* Layout */
+        .main-container { display: flex; max-width: 1200px; margin: 25px auto; width: 95%; gap: 20px; }
+        .sidebar { width: 260px; background: white; border-radius: 25px; padding: 20px; height: fit-content; box-shadow: 0 8px 24px rgba(0,0,0,0.05); }
+        .display-area { flex: 1; background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(10px); border-radius: 30px; padding: 30px; border: 2px solid white; box-shadow: 0 10px 30px rgba(0,0,0,0.03); }
+
+        /* Button phong cách hoạt hình */
         .menu-btn {
-            padding: 15px; margin-bottom: 10px; cursor: pointer; border-radius: 15px;
-            font-weight: bold; transition: 0.3s; display: flex; align-items: center; gap: 10px;
+            padding: 15px 20px; margin-bottom: 12px; cursor: pointer; border-radius: 15px;
+            font-weight: 700; color: #636e72; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex; align-items: center; gap: 10px; border: 2px solid transparent;
         }
-        .menu-btn.active { background: var(--primary); color: white; }
-        .menu-btn:hover:not(.active) { background: #f0f0f0; }
+        .menu-btn:hover { transform: scale(1.05); background: #fff4e6; color: var(--primary); }
+        .menu-btn.active { background: var(--primary); color: white; box-shadow: 0 5px 15px rgba(255, 159, 67, 0.4); }
 
-        /* Bạn Gà Nhảy Múa */
-        @keyframes gàNhảy {
-            0%, 100% { transform: translateY(0) scale(1); }
-            50% { transform: translateY(-15px) scale(1.1); }
+        /* Card bài học */
+        .lesson-card {
+            background: white; border-radius: 20px; padding: 20px; margin-bottom: 25px;
+            border: 1px solid #eee; transition: 0.3s; position: relative; overflow: hidden;
         }
+        .lesson-card::before { content: ''; position: absolute; top: 0; left: 0; width: 6px; height: 100%; background: var(--primary); }
+        .lesson-card:hover { transform: translateY(-5px); box-shadow: 0 12px 30px rgba(0,0,0,0.08); }
+
+        /* Bảng điểm cầu vồng */
+        table { width: 100%; border-collapse: separate; border-spacing: 0 8px; }
+        th { padding: 15px; color: #b2bec3; font-weight: 600; text-align: left; }
+        td { padding: 15px; background: white; }
+        td:first-child { border-radius: 15px 0 0 15px; }
+        td:last-child { border-radius: 0 15px 15px 0; }
+        .rank { padding: 5px 12px; border-radius: 10px; font-size: 12px; font-weight: 800; text-transform: uppercase; }
+        .Giỏi { background: #55efc4; color: #00b894; }
+        .Khá { background: #ffeaa7; color: #d6a01d; }
+        .Trung-Bình { background: #ff7675; color: white; }
+
+        /* CHATBOX MẦM NON SIÊU ĐẸP */
         #ai-toggle {
-            position: fixed; bottom: 25px; right: 25px; width: 70px; height: 70px;
-            background: white; border-radius: 50%; display: flex; align-items: center; 
-            justify-content: center; cursor: pointer; z-index: 999;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.15); border: 4px solid var(--accent);
-            animation: gàNhảy 2s infinite ease-in-out;
+            position: fixed; bottom: 30px; right: 30px; width: 70px; height: 70px;
+            background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            cursor: pointer; z-index: 9999; box-shadow: 0 10px 30px rgba(0,0,0,0.1); border: 4px solid var(--accent);
+            transition: 0.3s;
         }
-
-        /* Chatbox */
+        #ai-toggle:hover { transform: rotate(15deg) scale(1.1); }
+        
         #ai-container {
-            position: fixed; bottom: 105px; right: 25px; width: 350px; height: 500px;
-            background: white; border-radius: 20px; display: none; flex-direction: column;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2); overflow: hidden; z-index: 1000;
+            position: fixed; bottom: 110px; right: 30px; width: 380px; height: 550px;
+            background: white; border-radius: 30px; box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+            display: none; flex-direction: column; overflow: hidden; z-index: 9999;
+            border: 5px solid var(--accent);
         }
-        .ai-head { background: var(--accent); color: white; padding: 15px; font-weight: bold; display: flex; justify-content: space-between; }
-        .ai-msgs { flex: 1; padding: 15px; overflow-y: auto; background: #f9f9f9; display: flex; flex-direction: column; gap: 10px; }
-        .msg { padding: 10px 15px; border-radius: 15px; font-size: 14px; max-width: 80%; }
-        .msg.bot { background: white; align-self: flex-start; border: 1px solid #eee; }
-        .msg.user { background: var(--accent); color: white; align-self: flex-end; }
+        .ai-head { 
+            background: var(--accent); color: white; padding: 18px; font-weight: 800; 
+            display: flex; align-items: center; gap: 10px; font-size: 18px;
+        }
+        .ai-msgs { flex: 1; padding: 20px; overflow-y: auto; background: #f0faff; display: flex; flex-direction: column; gap: 12px; }
+        .msg { padding: 12px 18px; border-radius: 20px; font-size: 15px; max-width: 85%; line-height: 1.5; position: relative; }
+        .msg.bot { background: white; align-self: flex-start; border-bottom-left-radius: 2px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+        .msg.user { background: var(--accent); color: white; align-self: flex-end; border-bottom-right-radius: 2px; }
+        .ai-input-area { padding: 15px; background: white; display: flex; gap: 10px; border-top: 2px solid #eef2f7; }
+        .ai-input-area input { flex: 1; border: none; background: #f1f2f6; padding: 12px; border-radius: 12px; outline: none; }
 
-        /* Form & Table */
-        .input-style { width: 100%; padding: 12px; margin: 10px 0; border: 2px solid #eee; border-radius: 12px; outline: none; }
-        .btn-action { background: var(--primary); color: white; border: none; padding: 12px 20px; border-radius: 12px; cursor: pointer; font-weight: bold; width: 100%; }
-        table { width: 100%; border-collapse: collapse; margin-top: 15px; background: white; border-radius: 15px; overflow: hidden; }
-        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #eee; }
-        .rank { padding: 4px 10px; border-radius: 8px; font-size: 12px; color: white; font-weight: bold; }
-        .Giỏi { background: #2ecc71; } .Khá { background: #f1c40f; } .Trung-Bình { background: #e74c3c; }
-
-        .content-tab { display: none; }
+        /* LOGIN */
+        #login-page { position: fixed; inset: 0; background: var(--primary); display: flex; align-items: center; justify-content: center; z-index: 10000; }
+        .login-box { background: white; padding: 50px; border-radius: 40px; text-align: center; width: 400px; box-shadow: 0 20px 60px rgba(0,0,0,0.2); }
+        .input-style { width: 100%; padding: 15px; margin: 10px 0; border: 2px solid #eee; border-radius: 15px; font-size: 16px; outline: none; transition: 0.3s; }
+        .input-style:focus { border-color: var(--primary); }
+        .btn-main { background: var(--primary); color: white; border: none; padding: 15px 30px; border-radius: 15px; font-weight: 800; cursor: pointer; width: 100%; margin-top: 15px; font-size: 18px; }
+        
+        .content-tab { display: none; animation: fadeIn 0.5s; }
         .content-tab.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
 
-    <div id="login-page">
-        <div class="login-box">
-            <h1 style="color: var(--secondary); margin-bottom: 5px;">🐤 KinderLingo</h1>
-            <p style="margin-bottom: 25px; color: #666;">Chào mừng ông giáo đã quay lại!</p>
-            <input type="text" id="u" class="input-style" placeholder="Tên đăng nhập">
-            <input type="password" id="p" class="input-style" placeholder="Mật khẩu">
-            <button class="btn-action" style="background: var(--secondary); font-size: 16px;" onclick="handleLogin()">Vào Lớp Ngay 🚀</button>
-        </div>
+<div class="app-background"></div>
+
+<div id="ai-toggle" onclick="toggleAI()">
+    <img src="https://cdn-icons-png.flaticon.com/512/4616/4616734.png" width="45" alt="AI Bird">
+</div>
+
+<div id="ai-container">
+    <div class="ai-head">
+        <img src="https://cdn-icons-png.flaticon.com/512/4616/4616734.png" width="30" alt="icon">
+        <span>Bạn Gà AI Thông Thái</span>
+        <span style="margin-left:auto; cursor:pointer" onclick="toggleAI()">✕</span>
     </div>
+    <div class="ai-msgs" id="ai-content">
+        <div class="msg bot">Chào ông! Tôi là Bạn Gà AI đây. Hãy gửi tin nhắn để bắt đầu soạn bài nhé! 🐤</div>
+    </div>
+    <div class="ai-input-area">
+        <input type="text" id="ai-input" placeholder="Nhắn gì đó cho Gà AI..." onkeypress="if(event.key==='Enter') sendAI()">
+        <button onclick="sendAI()" style="background:var(--accent); border:none; padding:10px 15px; border-radius:12px; color:white; cursor:pointer; font-weight:bold">Gửi</button>
+    </div>
+</div>
 
-    <div id="main-app" style="display:none">
-        <header>
-            <div style="font-size: 24px; font-weight: bold; color: var(--secondary);">🐤 KinderLingo</div>
-            <button onclick="location.reload()" style="background:none; border:none; color: #999; cursor: pointer;">Đăng xuất</button>
-        </header>
+<div id="login-page">
+    <div class="login-box">
+        <div style="font-size: 60px;">🏫</div>
+        <h1 class="logo-text">KinderLingo</h1>
+        <p style="color: #636e72; margin-bottom: 20px;">Chào mừng thầy/cô quay lại!</p>
+        <input type="text" id="u" class="input-style" placeholder="Tên đăng nhập">
+        <input type="password" id="p" class="input-style" placeholder="Mật khẩu">
+        <button class="btn-main" onclick="handleLogin()">Bắt đầu buổi dạy</button>
+    </div>
+</div>
 
-        <div class="main-container">
-            <div class="sidebar">
-                <div class="menu-btn active" id="btn-lessons" onclick="switchPage('lessons-page')">📚 Bài giảng</div>
-                <div class="menu-btn" id="btn-scores" onclick="switchPage('scores-page')">📋 Sổ điểm bé</div>
-                <div class="menu-btn" id="btn-admin" onclick="switchPage('admin-page')">⚙️ Quản lý</div>
+<div id="main-app" style="display:none">
+    <header>
+        <div class="logo-box">
+            <span style="font-size: 30px;">🐤</span>
+            <span class="logo-text">KinderLingo</span>
+        </div>
+        <button onclick="location.reload()" style="background:#ff7675; color:white; border:none; padding:10px 20px; border-radius:12px; font-weight:bold; cursor:pointer">Đăng xuất</button>
+    </header>
+
+    <div class="main-container">
+        <div class="sidebar">
+            <div class="menu-btn active" id="btn-lessons" onclick="switchPage('lessons-page')"><span>📚</span> Bài giảng</div>
+            <div class="menu-btn" id="btn-scores" onclick="switchPage('scores-page')"><span>📋</span> Sổ điểm bé</div>
+            <div class="menu-btn" id="btn-admin" onclick="switchPage('admin-page')"><span>⚙️</span> Quản lý</div>
+        </div>
+
+        <div class="display-area">
+            <div id="lessons-page" class="content-tab active">
+                <h2 style="color:var(--primary); margin-top:0">Thư viện bài giảng 🌟</h2>
+                <div id="lesson-list"></div>
             </div>
 
-            <div class="display-area">
-                <div id="lessons-page" class="content-tab active">
-                    <h2 style="color: var(--secondary);">Bài học hôm nay 🌟</h2>
-                    <div id="lesson-list"></div>
-                </div>
+            <div id="scores-page" class="content-tab">
+                <h2 style="color:var(--secondary); margin-top:0">Bảng vàng của bé 🏆</h2>
+                <table>
+                    <thead><tr><th>Tên bé</th><th>Bài học</th><th>Kết quả</th><th>Xếp loại</th></tr></thead>
+                    <tbody id="score-table"></tbody>
+                </table>
+            </div>
 
-                <div id="scores-page" class="content-tab">
-                    <h2>Bảng vàng của bé 🏆</h2>
-                    <table>
-                        <thead><tr><th>Tên bé</th><th>Bài dạy</th><th>Kết quả</th><th>Xếp loại</th></tr></thead>
-                        <tbody id="score-table"></tbody>
-                    </table>
-                </div>
-
-                <div id="admin-page" class="content-tab">
-                    <h2>Thêm bài mới ✍️</h2>
+            <div id="admin-page" class="content-tab">
+                <h2 style="color:var(--accent); margin-top:0">Thêm nội dung mới ✍️</h2>
+                <div class="lesson-card">
+                    <label>Loại nội dung:</label>
                     <select id="type" class="input-style" onchange="toggleForm()">
                         <option value="vid">Video YouTube</option>
-                        <option value="doc">File PDF</option>
+                        <option value="doc">Tài liệu PDF</option>
                     </select>
-                    <input type="text" id="title" class="input-style" placeholder="Tên bài giảng">
-                    <input type="text" id="link" class="input-style" placeholder="Dán link YouTube">
+                    <input type="text" id="title" class="input-style" placeholder="Tên bài dạy (ví dụ: Chữ cái A B C)">
+                    <input type="text" id="link" class="input-style" placeholder="Dán link YouTube tại đây">
                     <input type="file" id="file" class="input-style" style="display:none">
-                    <button class="btn-action" onclick="saveData()">Đăng Bài Lên Lớp</button>
+                    <button class="btn-main" style="background:var(--accent)" onclick="saveData()">Đăng bài ngay</button>
                 </div>
             </div>
         </div>
     </div>
-
-    <div id="ai-toggle" onclick="toggleAI()">🐤</div>
-    <div id="ai-container">
-        <div class="ai-head"><span>Bạn Gà AI</span> <span onclick="toggleAI()" style="cursor:pointer">✕</span></div>
-        <div class="ai-msgs" id="ai-content">
-            <div class="msg bot">Chào ông! Tôi là Bạn Gà nhảy múa. Ông cần tôi giúp gì không?</div>
-        </div>
-        <div class="ai-input-area">
-            <input type="text" id="ai-input" placeholder="Hỏi AI..." onkeypress="if(event.key==='Enter') sendAI()" style="flex:1; padding:10px; border:1px solid #ddd; border-radius:10px;">
-            <button onclick="sendAI()" style="background:var(--accent); color:white; border:none; padding:10px 15px; border-radius:10px; margin-left:5px; cursor:pointer">Gửi</button>
-        </div>
-    </div>
+</div>
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
     import { getDatabase, ref, push, onValue, remove } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
+    // Firebase (Giữ nguyên của ông)
     const config = { apiKey: "AIzaSyCNxcMDCNliNsBgUTIvdEZGb-92c-L_3cs", authDomain: "kinderlingo-b9976.firebaseapp.com", databaseURL: "https://kinderlingo-b9976-default-rtdb.firebaseio.com/", projectId: "kinderlingo-b9976", storageBucket: "kinderlingo-b9976.firebasestorage.app", messagingSenderId: "946131764403", appId: "1:946131764403:web:5f1529ab8bfd70716b9cc6" };
     const app = initializeApp(config); const db = getDatabase(app);
 
-    // DÁN TOKEN MỚI VÀO ĐÂY (Dòng 145)
-    const HF_TOKEN = "hhf_jhYeSHiSSZRNCVDmCJtrYwEJwHtbynXmSg";
+    // AI TOKEN STORAGE (Né GitHub Scan)
+    let MY_KEY = localStorage.getItem("safe_token") || "";
 
     window.handleLogin = () => {
         if(document.getElementById('u').value === 'admin') {
@@ -186,19 +221,33 @@
     window.sendAI = async () => {
         const input = document.getElementById('ai-input');
         const text = input.value.trim(); if(!text) return;
+
+        // Nếu chưa có Token trong máy, yêu cầu nhập lần đầu
+        if(!MY_KEY) {
+            const key = prompt("Chào ông! Để bạn Gà AI hoạt động, hãy dán mã Token mới (hf_...) vào đây nhé (Chỉ nhập 1 lần duy nhất):");
+            if(key) { MY_KEY = key; localStorage.setItem("safe_token", key); } else return;
+        }
+
         const box = document.getElementById('ai-content');
         box.innerHTML += `<div class="msg user">${text}</div>`;
-        input.value = ""; const id = "bot-"+Date.now();
-        box.innerHTML += `<div class="msg bot" id="${id}">Gà đang nghĩ...</div>`;
+        input.value = "";
+        const id = "bot-"+Date.now();
+        box.innerHTML += `<div class="msg bot" id="${id}">Bạn Gà đang suy nghĩ... 💭</div>`;
         box.scrollTop = box.scrollHeight;
+
         try {
             const res = await fetch("https://api-inference.huggingface.co/models/mistralai/Mistral-7B-Instruct-v0.2", {
-                headers: { Authorization: `Bearer ${HF_TOKEN}`, "Content-Type": "application/json" },
-                method: "POST", body: JSON.stringify({ inputs: `[INST] Trả lời ngắn bằng tiếng Việt: ${text} [/INST]` }),
+                headers: { Authorization: `Bearer ${MY_KEY}`, "Content-Type": "application/json" },
+                method: "POST",
+                body: JSON.stringify({ inputs: `[INST] Bạn là trợ lý mầm non thân thiện. Trả lời cực ngắn bằng tiếng Việt: ${text} [/INST]` }),
             });
             const data = await res.json();
+            if(data.error) throw new Error();
             document.getElementById(id).innerText = data[0].generated_text.split('[/INST]').pop().trim();
-        } catch (e) { document.getElementById(id).innerText = "Token bị khóa rồi ông ơi! Thay mã mới ở dòng 145 nhé."; }
+        } catch (e) {
+            document.getElementById(id).innerText = "Lỗi rồi! Token cũ đã bị vô hiệu hóa. Ông hãy bấm F5 và dán Token MỚI vào nhé.";
+            localStorage.removeItem("safe_token"); MY_KEY = "";
+        }
         box.scrollTop = box.scrollHeight;
     };
 
@@ -218,31 +267,45 @@
             const f = document.getElementById('file').files[0];
             data = await new Promise(res => { const r = new FileReader(); r.onload = () => res(r.result); r.readAsDataURL(f); });
         }
-        push(ref(db, 'study_content'), { type, title, data });
-        switchPage('lessons-page');
+        if(title && data) {
+            push(ref(db, 'study_content'), { type, title, data });
+            alert("Đã đăng bài thành công! 🎉");
+            switchPage('lessons-page');
+        }
     };
 
-    window.grade = (lesson) => {
-        const name = prompt("Tên bé:"); const p = prompt("Câu đúng:"); const t = prompt("Tổng câu:");
+    window.addScore = (lesson) => {
+        const name = prompt("Tên bé học sinh:");
+        const p = prompt("Số câu đúng:");
+        const t = prompt("Tổng số câu:");
         if(name && p && t) {
-            const pct = Math.round((p/t)*100); const r = pct>=80?"Giỏi":pct>=50?"Khá":"Trung-Bình";
+            const pct = Math.round((p/t)*100);
+            const r = pct>=80?"Giỏi":pct>=50?"Khá":"Trung-Bình";
             push(ref(db, 'student_scores'), { student: name, lesson, result: pct+"%", rank: r });
         }
     };
+
+    window.delItem = (id) => confirm("Xóa bài học này?") && remove(ref(db, 'study_content/'+id));
 
     function refreshData() {
         onValue(ref(db, 'study_content'), (s) => {
             const cont = document.getElementById('lesson-list'); cont.innerHTML = "";
             const vals = s.val(); if(!vals) return;
             Object.entries(vals).reverse().forEach(([id, item]) => {
-                cont.innerHTML += `<div style="background:white; padding:20px; border-radius:15px; margin-bottom:15px; border-left: 5px solid var(--secondary);">
-                    <b>${item.title}</b><br>
-                    ${item.type==='vid' ? `<iframe width="100%" height="200" src="https://www.youtube.com/embed/${item.data}" style="border-radius:10px; margin:10px 0;"></iframe>` : `<button onclick="window.open('${item.data}')" style="width:100%; padding:10px; margin:10px 0;">Mở PDF</button>`}
-                    <button class="btn-action" onclick="grade('${item.title}')">✓ Chấm điểm bé</button>
-                    <button onclick="confirm('Xóa?') && remove(ref(db, 'study_content/${id}'))" style="background:none; border:none; color: #ccc; cursor:pointer; margin-top:5px;">Xóa bài</button>
-                </div>`;
+                cont.innerHTML += `
+                    <div class="lesson-card">
+                        <div style="display:flex; justify-content:space-between; align-items:center">
+                            <strong style="font-size:18px">${item.title}</strong>
+                            <button onclick="delItem('${id}')" style="background:none; border:none; color:#ccc; cursor:pointer">✕ Xóa</button>
+                        </div>
+                        ${item.type==='vid' ? 
+                        `<iframe width="100%" height="250" src="https://www.youtube.com/embed/${item.data}" frameborder="0" style="border-radius:15px; margin:15px 0"></iframe>` : 
+                        `<button onclick="window.open('${item.data}')" style="width:100%; padding:15px; margin:15px 0; border-radius:12px; border:2px dashed var(--primary); background:none; color:var(--primary); font-weight:bold; cursor:pointer">📖 Mở Tài Liệu PDF</button>`}
+                        <button class="btn-main" onclick="addScore('${item.title}')" style="background:var(--secondary); font-size:14px; padding:10px">✓ Chấm điểm cho bé</button>
+                    </div>`;
             });
         });
+
         onValue(ref(db, 'student_scores'), (s) => {
             const tbody = document.getElementById('score-table'); tbody.innerHTML = "";
             const vals = s.val(); if(!vals) return;
