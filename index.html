@@ -10,83 +10,46 @@
         * { box-sizing: border-box; }
         body, html { margin: 0; padding: 0; width: 100%; height: 100%; font-family: 'Segoe UI', sans-serif; }
 
-        /* LỚP NỀN DƯỚI CÙNG */
         .app-background {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background-image: url('https://images.unsplash.com/photo-1503676260728-1c00da094a0b?q=80&w=1920');
-            background-size: cover; background-position: center;
-            z-index: -1;
+            background-size: cover; background-position: center; z-index: -1;
         }
 
-        /* HIỆU ỨNG CON CHIM NHẢY */
-        @keyframes birdBounce {
-            0%, 100% { transform: translateY(0) rotate(0deg); }
-            50% { transform: translateY(-15px) rotate(5deg); }
-        }
-        .bird-icon { 
-            font-size: 50px; 
-            display: inline-block; 
-            animation: birdBounce 2s infinite ease-in-out; 
-            cursor: pointer;
-        }
+        @keyframes birdBounce { 0%, 100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-15px) rotate(5deg); } }
+        .bird-icon { font-size: 50px; display: inline-block; animation: birdBounce 2s infinite ease-in-out; }
 
-        /* CHỮ MÀU VÀNG CAM RỰC RỠ */
         .logo-text {
-            font-weight: 800;
-            font-size: 28px;
+            font-weight: 800; font-size: 28px;
             background: linear-gradient(45deg, #f59e0b, #ef4444);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            display: inline-block;
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
         }
 
-        /* LOGIN */
-        #login-page {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            display: flex; align-items: center; justify-content: center;
-            background: rgba(0, 0, 0, 0.5); z-index: 9999;
-        }
-        .login-box {
-            background: white; padding: 40px; border-radius: 25px; width: 340px;
-            text-align: center; box-shadow: 0 15px 35px rgba(0,0,0,0.3);
-        }
+        #login-page { position: fixed; top: 0; left: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: rgba(0, 0, 0, 0.5); z-index: 9999; }
+        .login-box { background: white; padding: 40px; border-radius: 25px; width: 340px; text-align: center; box-shadow: 0 15px 35px rgba(0,0,0,0.3); }
 
-        /* APP CHÍNH */
         #main-app { display: none; flex-direction: column; min-height: 100vh; position: relative; z-index: 10; }
-        
-        header {
-            background: rgba(255, 255, 255, 0.95); padding: 10px 5%;
-            display: flex; justify-content: space-between; align-items: center;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 1000;
-        }
+        header { background: rgba(255, 255, 255, 0.95); padding: 10px 5%; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 10px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 1000; }
 
         .content-container { display: flex; max-width: 1200px; margin: 25px auto; width: 95%; gap: 20px; }
-
-        /* SIDEBAR */
-        .sidebar {
-            width: 240px; background: white; border-radius: 18px; padding: 15px;
-            height: fit-content; box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            position: relative; z-index: 500;
-        }
-        .menu-btn {
-            padding: 14px 18px; margin-bottom: 8px; cursor: pointer; border-radius: 12px;
-            font-weight: 600; transition: 0.3s; color: #444; border: 1px solid transparent;
-        }
-        .menu-btn:hover { background: #fff7ed; color: #f59e0b; }
+        .sidebar { width: 240px; background: white; border-radius: 18px; padding: 15px; height: fit-content; box-shadow: 0 5px 15px rgba(0,0,0,0.1); z-index: 500; }
+        .menu-btn { padding: 14px 18px; margin-bottom: 8px; cursor: pointer; border-radius: 12px; font-weight: 600; color: #444; }
         .menu-btn.active { background: #f59e0b; color: white; }
 
-        /* NỘI DUNG */
-        .display-area {
-            flex: 1; background: rgba(255, 255, 255, 0.9); border-radius: 18px; 
-            padding: 30px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); z-index: 100;
-        }
-
+        .display-area { flex: 1; background: rgba(255, 255, 255, 0.9); border-radius: 18px; padding: 30px; z-index: 100; }
         .content-tab { display: none; }
         .content-tab.active { display: block; }
 
+        /* ĐÁNH GIÁ */
+        .grade-badge { padding: 5px 12px; border-radius: 20px; font-size: 13px; font-weight: bold; margin-left: 10px; }
+        .grade-gioi { background: #dcfce7; color: #166534; } /* Xanh lá */
+        .grade-kha { background: #fef9c3; color: #854d0e; } /* Vàng */
+        .grade-trungbinh { background: #fee2e2; color: #991b1b; } /* Đỏ */
+
         .btn-action { background: #f59e0b; color: white; border: none; padding: 12px; border-radius: 10px; cursor: pointer; font-weight: bold; width: 100%; margin-top: 10px; }
         input, select { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ddd; border-radius: 10px; }
-        .lesson-card { background: white; border-radius: 15px; padding: 20px; margin-bottom: 20px; border: 1px solid #eee; }
+        .lesson-card { background: white; border-radius: 15px; padding: 20px; margin-bottom: 20px; border: 1px solid #eee; transition: 0.3s; }
+        .lesson-card:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,0,0,0.05); }
     </style>
 </head>
 <body>
@@ -97,9 +60,8 @@
         <div class="login-box">
             <div class="bird-icon">🐤</div>
             <div><span class="logo-text">KinderLingo</span></div>
-            <p style="color: #666; margin-bottom: 20px;">Welcome to your classroom!</p>
-            <input type="text" id="u" placeholder="Admin name">
-            <input type="password" id="p" placeholder="Password">
+            <input type="text" id="u" placeholder="Tên thầy cô">
+            <input type="password" id="p" placeholder="Mật khẩu">
             <button class="btn-action" onclick="handleLogin()">Bắt đầu học ngay</button>
         </div>
     </div>
@@ -107,10 +69,10 @@
     <div id="main-app">
         <header>
             <div style="display:flex; align-items:center; gap:12px">
-                <div class="bird-icon" style="font-size: 35px;">🐤</div>
-                <span class="logo-text" style="font-size: 22px;">KinderLingo</span>
+                <div class="bird-icon" style="font-size: 30px;">🐤</div>
+                <span class="logo-text" style="font-size: 20px;">KinderLingo</span>
             </div>
-            <div style="flex:0 1 450px"><input type="text" id="searchBar" placeholder="Tìm kiếm bài học..." onkeyup="refreshList()" style="margin:0; border-radius: 20px;"></div>
+            <div style="flex:0 1 450px"><input type="text" id="searchBar" placeholder="Tìm bài học..." onkeyup="refreshList()" style="margin:0; border-radius: 20px;"></div>
             <button onclick="location.reload()" style="background:#fee2e2; color:red; border:none; padding:8px 15px; border-radius:8px; cursor:pointer; font-weight:bold">Thoát</button>
         </header>
 
@@ -126,16 +88,16 @@
                 </div>
 
                 <div id="admin-page" class="content-tab">
-                    <h3 style="margin-top:0">Thêm nội dung bài học</h3>
+                    <h3>Thêm nội dung bài học</h3>
                     <div style="background:#fff7ed; padding:20px; border-radius:15px; border: 1px solid #ffedd5;">
                         <select id="dataType" onchange="adjustInputs()">
                             <option value="vid">Video YouTube</option>
                             <option value="doc">Tài liệu PDF</option>
                         </select>
                         <input type="text" id="dataTitle" placeholder="Tiêu đề bài học...">
-                        <input type="text" id="dataLink" placeholder="Dán link YouTube tại đây...">
+                        <input type="text" id="dataLink" placeholder="Link YouTube...">
                         <input type="file" id="dataFile" accept="application/pdf" style="display:none">
-                        <button class="btn-action" style="background:#10b981" onclick="uploadData()">Lưu lên hệ thống ☁️</button>
+                        <button class="btn-action" style="background:#10b981" onclick="uploadData()">Lưu bài học ☁️</button>
                     </div>
                 </div>
             </div>
@@ -144,7 +106,7 @@
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-    import { getDatabase, ref, push, onValue, remove } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+    import { getDatabase, ref, push, onValue, remove, update } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
     const config = {
         apiKey: "AIzaSyCNxcMDCNliNsBgUTIvdEZGb-92c-L_3cs",
@@ -165,7 +127,7 @@
             document.getElementById('login-page').style.display = 'none';
             document.getElementById('main-app').style.display = 'flex';
             refreshList();
-        } else alert("Sai tài khoản hoặc mật khẩu!");
+        } else alert("Sai mật khẩu!");
     };
 
     window.switchPage = (pageId) => {
@@ -180,6 +142,29 @@
         const isDoc = document.getElementById('dataType').value === 'doc';
         document.getElementById('dataLink').style.display = isDoc ? 'none' : 'block';
         document.getElementById('dataFile').style.display = isDoc ? 'block' : 'none';
+    };
+
+    // HÀM TÍNH ĐIỂM VÀ PHÂN LOẠI
+    window.completeLesson = (id) => {
+        const score = prompt("Trẻ làm đúng bao nhiêu câu? (Nhập số câu đúng):", "0");
+        const total = prompt("Tổng số câu hỏi của bài này là bao nhiêu?:", "10");
+        
+        if (score !== null && total !== null) {
+            const percent = Math.round((parseInt(score) / parseInt(total)) * 100);
+            let rank = "";
+            let rankClass = "";
+
+            if (percent >= 80) { rank = "Giỏi"; rankClass = "grade-gioi"; }
+            else if (percent >= 50) { rank = "Khá"; rankClass = "grade-kha"; }
+            else { rank = "Trung bình"; rankClass = "grade-trungbinh"; }
+
+            update(ref(db, `study_content/${id}`), {
+                result: `${percent}%`,
+                rank: rank,
+                rankClass: rankClass
+            });
+            alert(`Kết quả: ${percent}% - Xếp loại: ${rank}`);
+        }
     };
 
     window.uploadData = async () => {
@@ -199,11 +184,9 @@
             });
         }
 
-        push(dbRef, { type, title, data: finalData }).then(() => {
-            alert("Đã lưu thành công!");
-            document.getElementById('dataTitle').value = "";
-            switchPage('lessons-page');
-        });
+        push(dbRef, { type, title, data: finalData, result: "Chưa học", rank: "N/A", rankClass: "" });
+        document.getElementById('dataTitle').value = "";
+        switchPage('lessons-page');
     };
 
     function refreshList() {
@@ -211,7 +194,7 @@
             const container = document.getElementById('lesson-list-container');
             container.innerHTML = "";
             const vals = snap.val();
-            if(!vals) return container.innerHTML = "<p>Chưa có bài học nào.</p>";
+            if(!vals) return;
             
             const search = document.getElementById('searchBar').value.toLowerCase();
             Object.entries(vals).reverse().forEach(([id, item]) => {
@@ -220,21 +203,24 @@
                 const card = document.createElement('div');
                 card.className = 'lesson-card';
                 card.innerHTML = `
-                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px">
-                        <strong style="font-size:18px">${item.title}</strong>
-                        <button onclick="delItem('${id}')" style="color:#ef4444; background:none; border:none; cursor:pointer; font-weight:bold">Xóa</button>
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px">
+                        <div>
+                            <strong style="font-size:18px">${item.title}</strong>
+                            ${item.rankClass ? `<span class="grade-badge ${item.rankClass}">${item.result} - ${item.rank}</span>` : ''}
+                        </div>
+                        <button onclick="delItem('${id}')" style="color:#94a3b8; background:none; border:none; cursor:pointer;">Xóa</button>
                     </div>
-                    ${item.type === 'vid' ? 
-                        `<iframe style="width:100%; aspect-ratio:16/9; border-radius:10px" src="https://www.youtube.com/embed/${item.data}" frameborder="0" allowfullscreen></iframe>` : 
-                        `<button onclick="openPDF('${id}')" style="width:100%; padding:15px; cursor:pointer; background:#fff7ed; border:1px solid #fdba74; border-radius:10px; font-weight:bold; color:#c2410c">📖 Mở tài liệu PDF</button>`}
+                    ${item.type === 'vid' ? `<iframe style="width:100%; aspect-ratio:16/9; border-radius:10px; border:none" src="https://www.youtube.com/embed/${item.data}"></iframe>` : 
+                    `<button onclick="openPDF('${id}')" style="width:100%; padding:15px; cursor:pointer; background:#fff7ed; border:1px solid #fdba74; border-radius:10px; font-weight:bold; color:#c2410c">📖 Mở PDF</button>`}
+                    
+                    <button class="btn-action" style="margin-top:15px; background:#2563eb" onclick="completeLesson('${id}')">✓ Đánh giá kết quả</button>
                 `;
                 container.appendChild(card);
             });
         });
     }
 
-    window.delItem = (id) => confirm("Xóa bài học này nhé?") && remove(ref(db, 'study_content/'+id));
-    
+    window.delItem = (id) => confirm("Xóa bài học này?") && remove(ref(db, 'study_content/'+id));
     window.openPDF = (id) => {
         onValue(ref(db, 'study_content/'+id), (snap) => {
             const item = snap.val();
